@@ -1,7 +1,10 @@
-export NODE_VERSION=`node -e "console.log(require('./package.json').engines.node);"`
-export APP_NAME = `node -e "console.log (require('./package.json').name);""`
+#export NODE_VERSION=`node -e "console.log(require('./package.json').engines.node);"`
+#export APP_NAME = `node -e "console.log (require('./package.json').name)";`
 export AWS_DEFAULT_REGION=us-east-2
 export AWS_REGION=us-east-2
+
+node -v
+npm -v 
 
 if [ -f package-lock.json ]; then 
   echo 'getting packages based on package-lock.json'
