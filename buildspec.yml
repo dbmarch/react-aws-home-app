@@ -8,7 +8,7 @@ env:
         ECR_REPO: '/home-app'
 
 phases:
-    pre-build:
+    pre_build:
         commands:
             - chmod +x ./scripts/*.sh
     build:
