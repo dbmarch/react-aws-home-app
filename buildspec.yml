@@ -7,19 +7,13 @@ env:
         STACK_VERSION: 'tbd'
         ECR_REPO: '/home-app'
 
-    phases:
-        install:
-            commands:
-                - echo install...
-        pre_build:
-            commands:
-                - echo pre_build...
-        build:
-            commands:
-                - echo Build started on 'date'
-                - ./scripts/dev_push.sh
-            finally:
-                - echo build phase finished
-        post_build:
-            commands:
-                - echo Build completed on 'date'
+phases:
+    build:
+        commands:
+            - echo Build started on 'date'
+            - ./scripts/dev_push.sh
+        finally:
+            - echo build phase finished
+    post_build:
+        commands:
+            - echo Build completed on 'date'
