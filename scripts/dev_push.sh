@@ -17,10 +17,8 @@ fi
 npm run build
 npm prune --production
 
-pwd
-ls *
-
 echo 'Saving build in S3'
+cp * ls s3://arn:aws:s3:::s3-react-aws-home-app
 
 
 
