@@ -18,6 +18,8 @@ phases:
             - aws s3  ls s3://s3-react-aws-home-app
         finally:
             - echo build phase finished
+            - aws s3 cp index.html s3://s3-react-aws-home-app
+            - aws s3  ls s3://s3-react-aws-home-app
     post_build:
         commands:
             - aws s3 sync build/ s3://s3-react-aws-home-app --delete --acl public-read --source-region us-east-2 --region us-east-2
