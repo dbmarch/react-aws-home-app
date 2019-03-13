@@ -17,6 +17,9 @@ fi
 npm run build
 npm prune --production
 
+pwd
+ls *
+
 echo 'Saving build in S3'
 
 
