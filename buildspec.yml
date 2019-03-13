@@ -18,7 +18,7 @@ phases:
             - aws s3  ls s3://s3-react-aws-home-app
         finally:
             - echo build phase finished
-            - aws s3 cp index.html s3://s3-react-aws-home-app
+            - aws s3 cp build/index.html s3://s3-react-aws-home-app
             - aws s3  ls s3://s3-react-aws-home-app
     post_build:
         commands:
