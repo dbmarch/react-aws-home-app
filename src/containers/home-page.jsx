@@ -27,6 +27,7 @@ const HomePage = (props) => {
   return (
     <div>
       <h2>Home Page</h2>
+      <p>www.dave-and-lisa.net</p>
       <div style={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'space-evenly' }}>
         <ColorSelect color={primaryColor} id="primary" onColorChange={onPrimaryColorChange} label="Primary" />
         <ColorSelect color={secondaryColor} id="secondary" onColorChange={onSecondaryColorChange} label="Secondary" />
