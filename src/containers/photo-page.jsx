@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-const HomePage = (props) => {
+const PhotoPage = (props) => {
   return (
     <div>
-      <h2>Home Page</h2>
+      <h2>Photo Page</h2>
     </div>
   )
 }
@@ -17,4 +17,4 @@ const mapDispatchToProps = (dispatch) => {
   return {}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage)
+export default connect(mapStateToProps, mapDispatchToProps)(PhotoPage)

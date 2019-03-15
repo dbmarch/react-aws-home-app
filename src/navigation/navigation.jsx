@@ -1,96 +1,40 @@
 import React from 'react'
-import { Link as RouterLink } from 'react-router-dom'
-import Link from '@material-ui/core/Link'
-import { withStyles } from '@material-ui/core/styles'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-// import Typography from '@material-ui/core/Typography'
+import { NavLink } from 'react-router-dom'
+import Navbar from 'react-bootstrap/Navbar'
+import Nav from 'react-bootstrap/Nav'
+// import NavDropdown from 'react-bootstrap/NavDropdown'
 
-const styles = (theme) => ({
-  root: {
-    width: '100%'
-  },
-  navBar: {},
-  grow: {
-    flexGrow: 1
-  },
-  menuItem: {
-    paddingRight: theme.spacing.unit * 8
-  }
-})
-
-const HomeLink = (props) => <RouterLink to="/" {...props} />
-const SearchLink = (props) => <RouterLink to="/search" {...props} />
-const TextLink = (props) => <RouterLink to="/text" {...props} />
-const ButtonsLink = (props) => <RouterLink to="/buttons" {...props} />
-const TabLink = (props) => <RouterLink to="/tab" {...props} />
-const SnackbarLink = (props) => <RouterLink to="/snack-bar" {...props} />
-const TooltipLink = (props) => <RouterLink to="/tool-tip" {...props} />
-const DialogLink = (props) => <RouterLink to="/dialog" {...props} />
-const BadgeLink = (props) => <RouterLink to="/badge" {...props} />
-const Navigation = ({ classes }) => {
+const Navigation = () => {
   return (
-    <AppBar position="static" color="inherit" className={classes.navBar}>
-      <Toolbar>
-        <Link className={classes.menuItem} component={HomeLink} variant="h6" color="secondary" noWrap underline="hover">
-          Home
-        </Link>
+    <Navbar style={{ backgroundColor: '#e0e0e0' }} variant="light" expand="lg" fixed="top" sticky="top">
+      <Navbar.Brand>D&L</Navbar.Brand>
 
-        <Link className={classes.menuItem} component={SearchLink} variant="h6" color="primary" noWrap underline="hover">
-          Search
-        </Link>
+      <Nav.Link as={NavLink} to="/" eventKey="1">
+        Home{' '}
+      </Nav.Link>
 
-        <Link
-          className={classes.menuItem}
-          component={ButtonsLink}
-          variant="h6"
-          color="inherit"
-          noWrap
-          underline="hover"
-        >
-          Buttons
-        </Link>
+      <Nav.Link as={NavLink} to="/photos" eventKey="2">
+        Photos
+      </Nav.Link>
 
-        <Link className={classes.menuItem} component={TextLink} variant="h6" color="inherit" noWrap underline="hover">
-          Text
-        </Link>
+      <Nav.Link as={NavLink} to="/login" eventKey="4" className="ml-auto mr-4">
+        Sign-In
+      </Nav.Link>
 
-        <Link className={classes.menuItem} component={DialogLink} variant="h6" color="inherit" noWrap underline="hover">
-          Dialog
-        </Link>
-
-        <Link className={classes.menuItem} component={BadgeLink} variant="h6" color="inherit" noWrap underline="hover">
-          Badge
-        </Link>
-
-        <Link className={classes.menuItem} component={TabLink} variant="h6" color="inherit" noWrap underline="hover">
-          Tab
-        </Link>
-
-        <Link
-          className={classes.menuItem}
-          component={SnackbarLink}
-          variant="h6"
-          color="inherit"
-          noWrap
-          underline="hover"
-        >
-          SnackBar
-        </Link>
-
-        <Link
-          className={classes.menuItem}
-          component={TooltipLink}
-          variant="h6"
-          color="inherit"
-          noWrap
-          underline="hover"
-        >
-          Tooltip
-        </Link>
-      </Toolbar>
-    </AppBar>
+      {/* <NavDropdown title="Sign In" id="nav-dropdown" className="ml-auto pr-5 mr-4">
+        <NavDropdown.Item as={NavLink} to="/login" eventKey="4.1" className="mr-5">
+          Login
+        </NavDropdown.Item>
+        <NavDropdown.Item eventKey="4.2" className="mr-2">
+          Register
+        </NavDropdown.Item>
+        <NavDropdown.Divider />
+        <NavDropdown.Item eventKey="4.4" className=" mr-2">
+          Logout
+        </NavDropdown.Item>
+      </NavDropdown> */}
+    </Navbar>
   )
 }
 
-export default withStyles(styles)(Navigation)
+export default Navigation

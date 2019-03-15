@@ -48,3 +48,7 @@ a.nav-item-link:hover {
   flex-flow: row nowrap;
   justify-content: space-evenly;
 }
+
+.form-login {
+  width: 80%;
+}
