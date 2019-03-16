@@ -1,16 +1,7 @@
-import { put, takeEvery, takeLatest, all, select } from 'redux-saga/effects'
-import _ from 'lodash'
-import {
-  CognitoUserPool,
-  CognitoUserAttribute,
-  CognitoUser,
-  AuthenticationDetails,
-  CognitoUserSession
-} from 'amazon-cognito-identity-js'
+import { takeLatest, select } from 'redux-saga/effects'
+import { LOGIN_USER, REGISTER_USER } from '../actions/actionTypes'
+import { CognitoUserPool, CognitoUserAttribute, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js'
 import { getUser } from '../selectors'
-
-import { CognitoIdentityCredentials } from 'aws-sdk'
-import * as AWS from 'aws-sdk/global'
 
 const poolData = {
   UserPoolId: 'us-east-2_zyce4X8Kl',
@@ -18,7 +9,8 @@ const poolData = {
 }
 var userPool = new CognitoUserPool(poolData)
 
-function* registerUser() {
+export function* doRegisterUser() {
+  console.info('doRegisterUser')
   const user = yield select(getUser)
   // user should have
   // const user = {
@@ -50,15 +42,16 @@ function* registerUser() {
         console.error(err)
         return
       }
-      console.info('signup returns ', cognitoUser)
       cognitoUser = result.user
+      console.info('signup returns ', cognitoUser)
       console.log('user name is ' + cognitoUser.getUsername())
     })
   } else {
     console.error('Unable to register user.', user)
   }
 }
-function* loginUser() {
+export function* doLoginUser() {
+  console.info('doLoginUser')
   const user = yield select(getUser)
   // user should have
   // const user = {
@@ -66,8 +59,8 @@ function* loginUser() {
   //   email: email,
   //   password: password
   // }
+  console.info('user', user)
   if (user.username && user.password) {
-    const attributeList = []
     var userData = {
       Username: user.username,
       Pool: userPool
@@ -83,6 +76,7 @@ function* loginUser() {
       onSuccess: function(result) {
         console.info('Login success!')
         var accessToken = result.getAccessToken().getJwtToken()
+        console.info('accessToken:', accessToken)
       },
 
       onFailure: function(err) {
@@ -100,8 +94,12 @@ function* loginUser() {
   }
 }
 
-function* authenticate() {
-  yield all([ takeLatest('LOGIN_USER', loginUser), takeLatest('REGISTER_USER', registerUser) ])
+export function* loginUser() {
+  console.info('Saga-loginUser')
+  yield takeLatest(LOGIN_USER, doLoginUser)
 }
 
-export default authenticate
+export function* registerUser() {
+  console.info('Saga-registerUser')
+  yield takeLatest(REGISTER_USER, doRegisterUser)
+}
