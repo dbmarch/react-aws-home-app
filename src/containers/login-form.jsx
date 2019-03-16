@@ -15,7 +15,7 @@ const Login = ({ isAuthLoading, isAuthFailed, registerUser, loginUser }) => {
   const [ password, setPassword ] = useState('')
   const [ firstName, setFirstName ] = useState('')
   const [ lastName, setLastName ] = useState('')
-
+  const [ submitActive, enableSubmit ] = useState(false)
   const submitForm = (event) => {
     event.preventDefault()
     console.info(event)
@@ -54,6 +54,7 @@ const Login = ({ isAuthLoading, isAuthFailed, registerUser, loginUser }) => {
                 <Form.Label>First Name</Form.Label>
                 <Form.Control
                   type="text"
+                  name="firstName"
                   placeholder="First Name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
@@ -63,6 +64,7 @@ const Login = ({ isAuthLoading, isAuthFailed, registerUser, loginUser }) => {
                 <Form.Label>Last Name</Form.Label>
                 <Form.Control
                   type="text"
+                  name="lastName"
                   placeholder="Last Name"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
@@ -71,15 +73,13 @@ const Login = ({ isAuthLoading, isAuthFailed, registerUser, loginUser }) => {
             </Form.Row>
           </Form.Group>
         )}
-        {loginType === 'login' && (
-          <Form.Text className="text-muted">Login with either user name or email address</Form.Text>
-        )}
         <Form.Group>
           <Form.Row>
             <Col>
               <Form.Label>User Name</Form.Label>
               <Form.Control
                 type="text"
+                name="username"
                 placeholder="Enter username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -90,6 +90,7 @@ const Login = ({ isAuthLoading, isAuthFailed, registerUser, loginUser }) => {
                 <Form.Label>Password</Form.Label>
                 <Form.Control
                   type="password"
+                  name="password"
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -111,6 +112,9 @@ const Login = ({ isAuthLoading, isAuthFailed, registerUser, loginUser }) => {
             </Form.Group>
           </Col>
         </Form.Row>
+        {loginType === 'login' && (
+          <Form.Text className="text-muted">Login with either user name or email address</Form.Text>
+        )}
         <Form.Group>
           <Form.Row>
             <Button variant="primary" type="submit">
