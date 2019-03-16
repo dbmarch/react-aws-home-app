@@ -8,6 +8,9 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import createSagaMiddleware from 'redux-saga'
+import rootSaga from './sagas'
+
 import rootReducer from './reducers/'
 
 const logger = (store) => {
@@ -20,8 +23,11 @@ const logger = (store) => {
     }
   }
 }
+const sagaMiddleware = createSagaMiddleware()
+const middlewares = [ sagaMiddleware, logger ]
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middlewares)))
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(logger)))
+sagaMiddleware.run(rootSaga)
 
 const app = (
   <Provider store={store}>

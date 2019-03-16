@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import listReducer from './nameList'
+import auth from './authReducer'
 
 const reducer = combineReducers({
-  nameList: listReducer
+  auth
 })
 
 export default reducer

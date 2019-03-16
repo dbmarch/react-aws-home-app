@@ -1,12 +1,20 @@
 import React, { useState, useRef } from 'react'
+import { connect } from 'react-redux'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
+import { isAuthLoading, isAuthFailed } from '../selectors'
+import { registerUser } from '../actions'
 
-const Login = (props) => {
+const Login = ({ isAuthLoading, isAuthFailed, registerUser }) => {
   const [ loginType, setLoginType ] = useState('login')
   const input = useRef(React.createRef())
+  const onSubmit = (username, email, password) => {
+    console.info('onSubmit - Signup ', username, email, password)
+    registerUser(username, email, password)
+  }
+
   return (
     <div>
       <Form className="form-login my-3 mx-auto">
@@ -61,4 +69,15 @@ const Login = (props) => {
   )
 }
 
-export default Login
+const mapStateToProps = (state) => {
+  return {
+    isAuthLoading: isAuthLoading(state),
+    isAuthFailed: isAuthFailed(state)
+  }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  registerUser: (user) => dispatch(registerUser(user))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
