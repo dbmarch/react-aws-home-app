@@ -3,9 +3,10 @@
 
 # react-aws-home-app
 
--   Start off with an empty react/redux framework using semantic ui.
--   Integrate AWS
+-   Uses React-Bootstrap for styling & components
+-   AWS monitors and kicks off a Code Build when master changes.
+-   Production images are saved in a S3 bucket.
+-   CloudFront hosts the web interface
+-   Cognito provides user management.
 -   Use API gateway to provide API
--   build using code build
--   deploy with CloudFront
--   manage users with Cognito
+
