@@ -3,8 +3,6 @@ version: 0.2
 env:
     variables:
         environment: 'dev'
-        STACK_NAME: 'tbd'
-        STACK_VERSION: 'tbd'
         ECR_REPO: '/home-app'
 
 phases:
@@ -15,11 +13,9 @@ phases:
         commands:
             - echo Build started on 'date'
             - ./scripts/dev_push.sh
-            - aws s3  ls s3://s3-react-aws-home-app
         finally:
-            - echo build phase finished
-            - aws s3 cp README.md s3://s3-react-aws-home-app
             - aws s3  ls s3://s3-react-aws-home-app
+            - echo build phase finished
     post_build:
         commands:
             - aws s3 sync build/ s3://s3-react-aws-home-app --delete --acl public-read --source-region us-east-2 --region us-east-2
