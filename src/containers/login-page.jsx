@@ -5,8 +5,10 @@ import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 import { isAuthLoading, isAuthFailed, isAuthenticated, getAuthenticatedUser } from '../selectors'
 import LoginForm from './login-form'
 import RegisterForm from './register-form'
+import { getSignedInUser, resendConfirmationCode } from '../actions'
+import Button from 'react-bootstrap/Button'
 
-const LoginPage = ({ isAuthenticated, authenticatedUser }) => {
+const LoginPage = ({ isAuthenticated, authenticatedUser, getSignedInUser }) => {
 	const [loginType, setLoginType] = useState('login')
 
 	return (
@@ -22,8 +24,8 @@ const LoginPage = ({ isAuthenticated, authenticatedUser }) => {
 
 			{loginType === 'login' && <LoginForm />}
 			{loginType === 'register' && <RegisterForm />}
-			<p>Authenticated={isAuthenticated}</p>
-			<p>AuthenticatedUser ={authenticatedUser}</p>
+			<Button onClick={getSignedInUser}>Get Logged in User</Button>
+			<Button onClick={resendConfirmationCode}>RESEND CONFIRMATION CODE</Button>
 		</div>
 	)
 }
@@ -37,7 +39,10 @@ const mapStateToProps = state => {
 	}
 }
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+	getSignedInUser: () => dispatch(getSignedInUser(null)),
+	resendConfirmationCode: () => dispatch(resendConfirmationCode(null)),
+})
 
 export default connect(
 	mapStateToProps,
