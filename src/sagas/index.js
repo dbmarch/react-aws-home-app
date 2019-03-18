@@ -1,5 +1,5 @@
 import { fork } from 'redux-saga/effects'
-import { registerUser, loginUser, confirmUser, resendConfirmationCode, getSignedInUser } from './authenticate'
+import { registerUser, loginUser, confirmUser, resendConfirmationCode, getSignedInUser, logout } from './authenticate'
 
 export default function* rootSaga() {
 	yield fork(registerUser)
@@ -7,4 +7,5 @@ export default function* rootSaga() {
 	yield fork(confirmUser)
 	yield fork(resendConfirmationCode)
 	yield fork(getSignedInUser)
+	yield fork(logout)
 }

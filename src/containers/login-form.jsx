@@ -1,14 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import Alert from 'react-bootstrap/Alert'
 import Col from 'react-bootstrap/Col'
-import { isAuthLoading, isAuthFailed } from '../selectors'
+import { isAuthLoading, getAuthError, isAuthenticated } from '../selectors'
 import { loginUser } from '../actions'
 
-const Login = ({ isAuthLoading, authError, loginUser }) => {
+const Login = ({ isAuthLoading, authError, loginUser, history, isAuthenticated }) => {
+	useEffect(() => {
+		if (isAuthenticated) {
+			console.info('redirect to home')
+			history.push('/')
+		}
+	}, [isAuthenticated])
+
 	const submitForm = ({ username, password }) => {
 		const userData = {
 			username,
@@ -100,10 +109,10 @@ const Login = ({ isAuthLoading, authError, loginUser }) => {
 				{loginForm}
 			</Formik>
 			{authError && (
-				<div>
+				<Alert variant="danger">
 					<div>ERROR: {authError.error} </div>
 					<div>DESCRIPTION: {authError.description}</div>
-				</div>
+				</Alert>
 			)}
 		</div>
 	)
@@ -112,7 +121,8 @@ const Login = ({ isAuthLoading, authError, loginUser }) => {
 const mapStateToProps = state => {
 	return {
 		isAuthLoading: isAuthLoading(state),
-		authError: isAuthFailed(state),
+		isAuthenticated: isAuthenticated(state),
+		authError: getAuthError(state),
 	}
 }
 
@@ -120,7 +130,9 @@ const mapDispatchToProps = dispatch => ({
 	loginUser: user => dispatch(loginUser(user)),
 })
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Login)
+export default withRouter(
+	connect(
+		mapStateToProps,
+		mapDispatchToProps
+	)(Login)
+)

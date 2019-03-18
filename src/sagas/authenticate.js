@@ -6,10 +6,12 @@ import {
 	CONFIRM_USER,
 	RESEND_CONFIRMATION_CODE,
 	GET_SIGNED_IN_USER,
+	LOGOUT,
 } from '../actions/action-types'
 import { CognitoUserPool, CognitoUserAttribute, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js'
 import { getUser, getUserCode } from '../selectors'
-import { setAuthenticated, setAuthFailed, setAuthorizedUser, setSession, setIdToken, setAccessToken } from '../actions'
+import { setAuthorized, setAuthError, setAuthenticatedUser, setSession } from '../actions'
+import { idTokenSelector } from '../selectors/authSelectors'
 import Promise from 'bluebird'
 
 const AWS_REGION = 'us-east-2'
@@ -73,7 +75,7 @@ function* doConfirmUser() {
 	const user = yield select(getUser)
 	const userCode = yield select(getUserCode)
 	if (!user.username || !userCode) {
-		yield put(setAuthFailed('require username & Confirmation code'))
+		yield put(setAuthError('require username & Confirmation code'))
 		return
 	}
 
@@ -81,7 +83,7 @@ function* doConfirmUser() {
 		const result = yield call(confirmUserAsync, user, userCode)
 		console.info('confirmation returns ', result)
 	} catch (err) {
-		yield put(setAuthFailed({ error: err.code, description: err.text }))
+		yield put(setAuthError({ error: err.code, description: err.text }))
 	}
 }
 
@@ -192,23 +194,21 @@ export function* doLoginUser() {
 	console.info('doLoginUser')
 	const user = yield select(getUser)
 	if (!user.username && !user.password) {
-		yield put(setAuthFailed('require username & password'))
+		yield put(setAuthError('require username & password'))
 		return
 	}
 	console.info('user', user)
 
 	try {
 		const session = yield call(loginAsync, user)
-		var accessToken = session.getAccessToken().getJwtToken()
-		var idToken = session.getIdToken().getJwtToken()
-		yield put(setAuthenticated(userPool.getCurrentUser()))
 		yield put(setSession(session))
-		yield put(setIdToken(idToken))
-		yield put(setAccessToken(accessToken))
+		yield put(setAuthenticatedUser(userPool.getCurrentUser()))
+		const idToken = yield select(idTokenSelector)
 		yield call(obtainCredentialsAsync, idToken)
+		yield put(setAuthorized(session.isValid()))
 		console.info('Session: ', session)
 	} catch (err) {
-		yield put(setAuthFailed({ error: err.code, description: err.text }))
+		yield put(setAuthError({ error: err.code, description: err.text }))
 	}
 }
 
@@ -259,11 +259,11 @@ export function* doRegisterUser() {
 	try {
 		const cognitoUser = yield call(signupAsync, user)
 		console.info('signupAsync returned', cognitoUser)
-		yield put(setAuthorizedUser(cognitoUser))
+		yield put(setAuthenticatedUser(cognitoUser))
 	} catch (err) {
 		console.error('register failed ', err)
 		console.info(JSON.stringify(err, null, 2))
-		yield put(setAuthFailed({ error: err.code, description: err.message }))
+		yield put(setAuthError({ error: err.code, description: err.message }))
 	}
 }
 
@@ -281,7 +281,7 @@ export function* doResendConfirmationCode() {
 		console.info('resendConfirmationCode returned', result)
 	} catch (err) {
 		console.error('register failed ', err)
-		yield put(setAuthFailed({ error: err.code, description: err.message }))
+		yield put(setAuthError({ error: err.code, description: err.message }))
 	}
 }
 
@@ -297,17 +297,29 @@ export function* doGetSignedInUser() {
 	try {
 		const session = yield call(obtainSessionAsync)
 		console.info('Session', session)
-		var accessToken = session.getAccessToken().getJwtToken()
-		var idToken = session.getIdToken().getJwtToken()
-		yield put(setAuthenticated(userPool.getCurrentUser()))
 		yield put(setSession(session))
-		yield put(setIdToken(idToken))
-		yield put(setAccessToken(accessToken))
-
+		yield put(setAuthorized(session.isValid()))
 		console.info('currentUser = ', userPool.getCurrentUser())
 	} catch (err) {
 		console.error('Get signed in user failed ', err)
-		yield put(setAuthFailed({ error: err.code, description: err.message }))
+		yield put(setAuthError({ error: err.code, description: err.message }))
+	}
+}
+
+function* doLogout() {
+	console.info('doLogout')
+
+	try {
+		userPool.getCurrentUser().signOut()
+	} catch (err) {
+		console.info(err)
+	}
+	try {
+		yield put(setAuthorized(false))
+		yield put(setSession({}))
+		yield put(setSession({}))
+	} catch (err) {
+		console.info(err)
 	}
 }
 
@@ -334,4 +346,9 @@ export function* resendConfirmationCode() {
 export function* getSignedInUser() {
 	console.info('Saga-getSignedInUser')
 	yield takeLatest(GET_SIGNED_IN_USER, doGetSignedInUser)
+}
+
+export function* logout() {
+	console.info('Saga-getSignedInUser')
+	yield takeLatest(LOGOUT, doLogout)
 }

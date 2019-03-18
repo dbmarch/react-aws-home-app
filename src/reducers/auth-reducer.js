@@ -1,16 +1,14 @@
 import {
 	SET_AUTH_LOADING,
-	SET_AUTH_FAILED,
-	SET_AUTH_SUCCESS,
+	SET_AUTH_ERROR,
+	SET_AUTHORIZED,
 	SET_SESSION,
-	SET_ID_TOKEN,
-	SET_ACCESS_TOKEN,
 	SET_USER,
 	SET_USER_CODE,
 	REGISTER_USER,
 	LOGIN_USER,
-	SET_USER_POOL,
-	SET_AUTHORIZED_USER,
+	SET_AUTHENTICATED_USER,
+	LOGOUT,
 } from '../actions/action-types'
 import { combineReducers } from 'redux'
 
@@ -24,12 +22,14 @@ const isLoading = (state = false, action = {}) => {
 }
 
 // Saves the access token
-const isAuthenticated = (state = null, action = {}) => {
+const isAuthenticated = (state = false, action = {}) => {
 	switch (action.type) {
 		case LOGIN_USER:
 		case REGISTER_USER:
-			return null
-		case SET_AUTH_SUCCESS:
+		case LOGOUT:
+			return false
+
+		case SET_AUTHORIZED:
 			return action.payload
 		default:
 			return state
@@ -37,30 +37,10 @@ const isAuthenticated = (state = null, action = {}) => {
 }
 
 // Saves the error
-const authFailed = (state = null, action = {}) => {
+const authError = (state = null, action = {}) => {
 	switch (action.type) {
-		case SET_AUTH_FAILED:
+		case SET_AUTH_ERROR:
 			return action.payload
-		default:
-			return state
-	}
-}
-
-const idToken = (state = {}, action = {}) => {
-	switch (action.type) {
-		case SET_ID_TOKEN:
-			return action.payload
-
-		default:
-			return state
-	}
-}
-
-const accessToken = (state = {}, action = {}) => {
-	switch (action.type) {
-		case SET_ACCESS_TOKEN:
-			return action.payload
-
 		default:
 			return state
 	}
@@ -70,6 +50,8 @@ const session = (state = {}, action = {}) => {
 	switch (action.type) {
 		case SET_SESSION:
 			return action.payload
+		case LOGOUT:
+			return {}
 		default:
 			return state
 	}
@@ -102,33 +84,23 @@ const userCode = (state = '', action = {}) => {
 	}
 }
 
-const authorizedUser = (state = {}, action = {}) => {
+const authenticatedUser = (state = {}, action = {}) => {
 	switch (action.type) {
-		case SET_AUTHORIZED_USER:
+		case SET_AUTHENTICATED_USER:
 			return action.payload
+		case LOGOUT:
+			return {}
 		default:
 			return state
 	}
 }
 
-const userPool = (state = {}, action = {}) => {
-	switch (action.type) {
-		case SET_USER_POOL:
-			return action.payload
-
-		default:
-			return state
-	}
-}
 export default combineReducers({
 	isLoading,
-	authFailed,
+	authError,
 	isAuthenticated,
 	session,
-	idToken,
-	accessToken,
 	user,
 	userCode,
-	authorizedUser,
-	userPool,
+	authenticatedUser,
 })

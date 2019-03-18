@@ -5,8 +5,9 @@ import * as yup from 'yup'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
+import Alert from 'react-bootstrap/Alert'
 
-import { isAuthLoading, isAuthFailed } from '../selectors'
+import { isAuthLoading, getAuthError } from '../selectors'
 import { registerUser, loginUser } from '../actions'
 
 const Register = ({ isAuthLoading, authError, registerUser, loginUser }) => {
@@ -182,10 +183,10 @@ const Register = ({ isAuthLoading, authError, registerUser, loginUser }) => {
 				{registerForm}
 			</Formik>
 			{authError && (
-				<div>
+				<Alert variant="danger">
 					<div>ERROR: {authError.error} </div>
 					<div>DESCRIPTION: {authError.description}</div>
-				</div>
+				</Alert>
 			)}
 		</div>
 	)
@@ -194,7 +195,7 @@ const Register = ({ isAuthLoading, authError, registerUser, loginUser }) => {
 const mapStateToProps = state => {
 	return {
 		isAuthLoading: isAuthLoading(state),
-		authError: isAuthFailed(state),
+		authError: getAuthError(state),
 	}
 }
 
