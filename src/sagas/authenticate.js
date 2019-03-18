@@ -43,7 +43,7 @@ const resendConfirmationCodeAsync = (user) => {
   }
   const cognitoUser = new CognitoUser(userData)
   return new Promise((resolve, reject) =>
-    cognitoUser.resendconfirmationCode((err, result) => {
+    cognitoUser.resendConfirmationCode((err, result) => {
       if (err) {
         reject(err)
         return
