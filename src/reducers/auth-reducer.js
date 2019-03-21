@@ -9,6 +9,7 @@ import {
 	LOGIN_USER,
 	SET_AUTHENTICATED_USER,
 	LOGOUT,
+	SET_NEW_PASSWORD,
 } from '../actions/action-types'
 import { combineReducers } from 'redux'
 
@@ -95,6 +96,18 @@ const authenticatedUser = (state = {}, action = {}) => {
 	}
 }
 
+const newPassword = (state = '', action = {}) => {
+	switch (action.type) {
+		case SET_NEW_PASSWORD:
+			return action.payload
+		case LOGIN_USER:
+		case LOGOUT:
+			return {}
+		default:
+			return state
+	}
+}
+
 export default combineReducers({
 	isLoading,
 	authError,
@@ -103,4 +116,5 @@ export default combineReducers({
 	user,
 	userCode,
 	authenticatedUser,
+	newPassword,
 })

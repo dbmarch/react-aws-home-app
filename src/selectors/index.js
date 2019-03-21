@@ -5,3 +5,4 @@ export const getUser = state => state.auth.user
 export const getUserCode = state => state.auth.userCode
 export const getAuthenticatedUser = state => state.auth.authenticatedUser
 export const getSession = state => state.auth.session
+export const getNewPassword = state => state.auth.newPassword

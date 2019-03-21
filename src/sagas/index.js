@@ -1,11 +1,22 @@
 import { fork } from 'redux-saga/effects'
-import { registerUser, loginUser, confirmUser, resendConfirmationCode, getSignedInUser, logout } from './authenticate'
+import {
+	registerUserSaga,
+	loginUserSaga,
+	confirmUserSaga,
+	resendConfirmationCodeSaga,
+	getSignedInUserSaga,
+	logoutSaga,
+} from './authenticate'
+import { changePasswordSaga, forgotPasswordSaga, deleteAccountSaga } from './account'
 
 export default function* rootSaga() {
-	yield fork(registerUser)
-	yield fork(loginUser)
-	yield fork(confirmUser)
-	yield fork(resendConfirmationCode)
-	yield fork(getSignedInUser)
-	yield fork(logout)
+	yield fork(registerUserSaga)
+	yield fork(loginUserSaga)
+	yield fork(confirmUserSaga)
+	yield fork(resendConfirmationCodeSaga)
+	yield fork(getSignedInUserSaga)
+	yield fork(logoutSaga)
+	yield fork(changePasswordSaga)
+	yield fork(forgotPasswordSaga)
+	yield fork(deleteAccountSaga)
 }
