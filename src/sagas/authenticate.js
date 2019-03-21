@@ -306,7 +306,10 @@ export function* confirmUserSaga() {
 	yield takeLatest(CONFIRM_USER, doConfirmUser)
 }
 
-console.info('Saga-resendConfirmationCode')
+export function* resendConfirmationCodeSaga() {
+	console.info('Saga-resendConfirmationCode')
+	yield takeLatest(RESEND_CONFIRMATION_CODE, doResendConfirmationCode)
+}
 export function* getSignedInUserSaga() {
 	console.info('Saga-getSignedInUser')
 	yield takeLatest(GET_SIGNED_IN_USER, doGetSignedInUser)
