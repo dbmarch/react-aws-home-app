@@ -1,3 +1,7 @@
+.photo-page {
+  margin: 2rem;
+}
+
 .filtered-list-box {
   margin: 2rem;
   display: grid;
@@ -31,6 +35,7 @@
   padding: 0.25rem;
   width: 100%;
 }
+
 /* 
 a.nav-item-link {
   color: rgb(153, 19, 19);

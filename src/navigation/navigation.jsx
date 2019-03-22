@@ -22,6 +22,10 @@ const Navigation = ({ isAuthenticated, authenticatedUser }) => {
 				Photos
 			</Nav.Link>
 
+			<Nav.Link as={NavLink} to="/gallery" eventKey="3">
+				Gallery
+			</Nav.Link>
+
 			{!isAuthenticated && (
 				<Nav.Link as={NavLink} to="/login" eventKey="4" className="ml-auto mr-4">
 					Sign-In

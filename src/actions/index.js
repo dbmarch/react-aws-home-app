@@ -22,3 +22,5 @@ export const forgotPassword = actionCreator(action.FORGOT_PASSWORD)
 export const changePassword = actionCreator(action.CHANGE_PASSWORD)
 export const deleteAccount = actionCreator(action.DELETE_ACCOUNT)
 export const setNewPassword = actionCreator(action.SET_NEW_PASSWORD)
+
+export const fetchPhotoList = actionCreator(action.FETCH_PHOTO_LIST)
