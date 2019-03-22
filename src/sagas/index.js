@@ -7,6 +7,7 @@ import {
 	getSignedInUserSaga,
 	logoutSaga,
 } from './authenticate'
+import { fetchPhotoListSaga } from './photos'
 import { changePasswordSaga, forgotPasswordSaga, deleteAccountSaga } from './account'
 
 export default function* rootSaga() {
@@ -19,4 +20,5 @@ export default function* rootSaga() {
 	yield fork(changePasswordSaga)
 	yield fork(forgotPasswordSaga)
 	yield fork(deleteAccountSaga)
+	yield fork(fetchPhotoListSaga)
 }
