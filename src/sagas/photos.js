@@ -1,8 +1,8 @@
-import * as AWS from 'aws-sdk/global'
+import * as AWS from 'aws-sdk'
 import * as AwsAppSettings from '../aws/config'
-import { takeLatest, call } from 'redux-saga/effects'
+import { takeLatest, call, select } from 'redux-saga/effects'
 import { FETCH_PHOTO_LIST } from '../actions/action-types'
-
+import { idTokenSelector } from '../selectors/authSelectors'
 import { CognitoUserPool } from 'amazon-cognito-identity-js'
 
 import Promise from 'bluebird'
@@ -13,11 +13,16 @@ import Promise from 'bluebird'
 
 // const userPool = new CognitoUserPool(AwsAppSettings.poolData)
 
-const getS3 = () => {
+const getS3 = idToken => {
+	AWS.config.region = AwsAppSettings.AWS_REGION
 	AWS.config.update({
 		region: AwsAppSettings.AWS_REGION,
 		credentials: new AWS.CognitoIdentityCredentials({
 			IdentityPoolId: AwsAppSettings.IDENTITY_POOL_ID,
+			Logins: {
+				// [`cognito-idp.${AWS_REGION}.amazonaws.com/${USER_POOL_ID}`]: idToken,
+				'cognito-idp.us-east-2.amazonaws.com/us-east-2_zyce4X8Kl': idToken,
+			},
 		}),
 	})
 
@@ -28,11 +33,11 @@ const getS3 = () => {
 	return s3
 }
 
-const fetchPhotoListAsync = () => {
-	const s3 = getS3()
-
+const fetchPhotoListAsync = idToken => {
+	const s3 = getS3(idToken)
+	console.info('s3', s3)
 	return new Promise((resolve, reject) => {
-		s3.listObjects({ Delimiter: '/' }, function(err, data) {
+		s3.listObjects({ MaxKeys: 10 }, function(err, data) {
 			if (err) {
 				console.error(err)
 				reject(err)
@@ -50,7 +55,8 @@ const fetchPhotoListAsync = () => {
 function* doFetchPhotoList() {
 	console.info('doFetchPhotoList')
 	try {
-		const photoList = yield call(fetchPhotoListAsync)
+		const idToken = yield select(idTokenSelector)
+		const photoList = yield call(fetchPhotoListAsync, idToken)
 		console.info('photoList returned')
 	} catch (err) {
 		console.error(err)

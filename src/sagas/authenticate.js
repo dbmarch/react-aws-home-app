@@ -1,4 +1,4 @@
-import * as AWS from 'aws-sdk/global'
+import * as AWS from 'aws-sdk'
 import * as AwsAppSettings from '../aws/config'
 import { takeLatest, select, put, call } from 'redux-saga/effects'
 import {
