@@ -24,3 +24,4 @@ export const deleteAccount = actionCreator(action.DELETE_ACCOUNT)
 export const setNewPassword = actionCreator(action.SET_NEW_PASSWORD)
 
 export const fetchPhotoList = actionCreator(action.FETCH_PHOTO_LIST)
+export const setPhotoUrlList = actionCreator(action.SET_PHOTO_URL_LIST)

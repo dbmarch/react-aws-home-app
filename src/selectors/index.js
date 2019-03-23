@@ -8,3 +8,4 @@ export const getSession = state => state.auth.session
 export const getNewPassword = state => state.auth.newPassword
 
 export const getPhotoList = state => state.photo.photoList
+export const getPhotoUrlList = state => state.photo.photoUrlList

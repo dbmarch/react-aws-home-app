@@ -1,9 +1,9 @@
 import * as AWS from 'aws-sdk'
 import * as AwsAppSettings from '../aws/config'
-import { takeLatest, call, select } from 'redux-saga/effects'
+import { takeLatest, call, select, put } from 'redux-saga/effects'
 import { FETCH_PHOTO_LIST } from '../actions/action-types'
 import { idTokenSelector } from '../selectors/authSelectors'
-import { CognitoUserPool } from 'amazon-cognito-identity-js'
+import { setPhotoUrlList } from '../actions'
 
 import Promise from 'bluebird'
 //PHOTO_BUCKET_NAME
@@ -37,7 +37,7 @@ const fetchPhotoListAsync = idToken => {
 	const s3 = getS3(idToken)
 	console.info('s3', s3)
 	return new Promise((resolve, reject) => {
-		s3.listObjects({ MaxKeys: 10 }, function(err, data) {
+		s3.listObjectsV2({ MaxKeys: 10 }, function(err, data) {
 			if (err) {
 				console.error(err)
 				reject(err)
@@ -57,7 +57,12 @@ function* doFetchPhotoList() {
 	try {
 		const idToken = yield select(idTokenSelector)
 		const photoList = yield call(fetchPhotoListAsync, idToken)
-		console.info('photoList returned')
+		console.info('photoList returned', photoList)
+		const photoUrlList = photoList.Contents.map(
+			photo => `https://s3/amazonaws.com/${AwsAppSettings.PHOTO_BUCKET_NAME}/${photo.Key}`
+		)
+		console.log(photoUrlList)
+		yield put(setPhotoUrlList(photoUrlList))
 	} catch (err) {
 		console.error(err)
 	}

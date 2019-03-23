@@ -1,0 +1,21 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::327804519666:role/Cognito_dave_lisa_appAuth_Role"
+			},
+			"Action": "s3:ListBucket",
+			"Resource": "arn:aws:s3:::home-app-photos"
+		},
+		{
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::327804519666:role/Cognito_dave_lisa_appAuth_Role"
+			},
+			"Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
+			"Resource": ["arn:aws:s3:::home-app-photos/*", "arn:aws:s3:::home-app-photos"]
+		}
+	]
+}
