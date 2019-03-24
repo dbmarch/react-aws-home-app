@@ -11,7 +11,6 @@ const PhotoPage = ({ fetchPhotoList, photoUrlList }) => {
 		<div className="photo-page">
 			<h2>React Photo Gallery</h2>
 			<Button onClick={fetchPhotoList}>FETCH PHOTOS</Button>
-
 			<Gallery photos={photos} />
 		</div>
 	)
