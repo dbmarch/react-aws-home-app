@@ -1,0 +1,33 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "VisualEditor0",
+			"Effect": "Allow",
+			"Action": [
+				"s3:Get*",
+				"s3:List*",
+				"s3:Put*",
+				"s3:Delete*",
+				"logs:CreateLogStream",
+				"logs:PutLogEvents",
+				"s3:GetObjectVersion"
+			],
+			"Resource": [
+				"arn:aws:s3:::s3-react-aws-home-app/*",
+				"arn:aws:s3:::s3-react-aws-home-app",
+				"arn:aws:logs:us-east-2:327804519666:log-group:/aws/codebuild/react-aws-home-app",
+				"arn:aws:logs:us-east-2:327804519666:log-group:/aws/codebuild/react-aws-home-app:*"
+			]
+		},
+		{
+			"Sid": "VisualEditor2",
+			"Effect": "Allow",
+			"Action": "logs:CreateLogGroup",
+			"Resource": [
+				"arn:aws:logs:us-east-2:327804519666:log-group:/aws/codebuild/react-aws-home-app",
+				"arn:aws:logs:us-east-2:327804519666:log-group:/aws/codebuild/react-aws-home-app:*"
+			]
+		}
+	]
+}
