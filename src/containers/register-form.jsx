@@ -32,16 +32,11 @@ const Register = ({ isAuthLoading, authError, registerUser, loginUser }) => {
 			.string()
 			.min(6, 'Too short')
 			.required('Required'),
-		firstName: yup
+		phoneNumber: yup
 			.string()
-			.min(2, 'Too short')
-			.max(50, 'Too long')
+			.min(7, 'Too short')
 			.required('Required'),
-		lastName: yup
-			.string()
-			.min(2, 'Too short')
-			.max(50, 'Too long')
-			.required('Required'),
+
 		email: yup
 			.string()
 			.email('Invalid email')
@@ -53,72 +48,6 @@ const Register = ({ isAuthLoading, authError, registerUser, loginUser }) => {
 			<div>
 				<Form.Group>
 					<Form.Row>
-						<Col>
-							<Form.Group controlId="first-name">
-								<Form.Label>First Name</Form.Label>
-								<Form.Control
-									name="firstName"
-									type="text"
-									placeholder="First Name"
-									value={values.firstName}
-									onChange={handleChange}
-									isValid={touched.firstName && !errors.firstName}
-									isInvalid={touched.firstName && errors.firstName}
-									onBlur={handleBlur}
-								/>
-								{errors.firstName && (
-									<Form.Control.Feedback type="invalid">{errors.firstName}</Form.Control.Feedback>
-								)}
-							</Form.Group>
-						</Col>
-						<Col>
-							<Form.Group controlId="last-name">
-								<Form.Label>First Name</Form.Label>
-								<Form.Control
-									name="lastName"
-									type="text"
-									placeholder="Last Name"
-									value={values.lastName}
-									onChange={handleChange}
-									isValid={touched.lastName && !errors.lastName}
-									isInvalid={touched.lastName && errors.lastName}
-									onBlur={handleBlur}
-								/>
-								{errors.lastName && (
-									<Form.Control.Feedback type="invalid">{errors.lastName}</Form.Control.Feedback>
-								)}
-							</Form.Group>
-						</Col>
-					</Form.Row>
-				</Form.Group>
-
-				<Form.Group>
-					<Form.Row>
-						<Col>
-							<Form.Group controlId="formBasicEmail">
-								<Form.Label>Email address</Form.Label>
-								<Form.Control
-									name="email"
-									type="email"
-									placeholder="Enter email"
-									value={values.email}
-									onChange={handleChange}
-									isValid={touched.email && !errors.email}
-									isInvalid={touched.email && errors.email}
-									onBlur={handleBlur}
-								/>
-								{errors.email && (
-									<Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
-								)}
-							</Form.Group>
-						</Col>
-					</Form.Row>
-					<Form.Text className="text-muted">Choose a username and password</Form.Text>
-				</Form.Group>
-			</div>
-			<Form.Group>
-				<Form.Row>
-					<Col>
 						<Form.Group controlId="username">
 							<Form.Label>Username</Form.Label>
 							<Form.Control
@@ -135,8 +64,8 @@ const Register = ({ isAuthLoading, authError, registerUser, loginUser }) => {
 								<Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
 							)}
 						</Form.Group>
-					</Col>
-					<Col>
+					</Form.Row>
+					<Form.Row>
 						<Form.Group controlId="password">
 							<Form.Label>Password</Form.Label>
 							<Form.Control
@@ -153,9 +82,48 @@ const Register = ({ isAuthLoading, authError, registerUser, loginUser }) => {
 								<Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
 							)}
 						</Form.Group>
-					</Col>
-				</Form.Row>
-			</Form.Group>
+					</Form.Row>
+					<Form.Row>
+						<Form.Group controlId="formBasicEmail">
+							<Form.Label>Email address</Form.Label>
+							<Form.Control
+								name="email"
+								type="email"
+								placeholder="Enter email"
+								value={values.email}
+								onChange={handleChange}
+								isValid={touched.email && !errors.email}
+								isInvalid={touched.email && errors.email}
+								onBlur={handleBlur}
+							/>
+							{errors.email && (
+								<Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+							)}
+						</Form.Group>
+					</Form.Row>
+				</Form.Group>
+
+				<Form.Group>
+					<Form.Row>
+						<Form.Group controlId="formBasicPhoneNumber">
+							<Form.Label>Phone Number</Form.Label>
+							<Form.Control
+								name="phoneNumber"
+								type="tel"
+								placeholder="Enter Phone Number"
+								value={values.phoneNumber}
+								onChange={handleChange}
+								isValid={touched.phoneNumber && !errors.phoneNumber}
+								isInvalid={touched.phoneNumber && errors.phoneNumber}
+								onBlur={handleBlur}
+							/>
+							{errors.email && (
+								<Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+							)}
+						</Form.Group>
+					</Form.Row>
+				</Form.Group>
+			</div>
 
 			<Form.Group>
 				<Form.Row>

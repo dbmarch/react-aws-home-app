@@ -43,42 +43,40 @@ const Login = ({ isAuthLoading, authError, loginUser, history, isAuthenticated }
 			<Form noValidate className="form-login my-3 mx-auto" onSubmit={handleSubmit}>
 				<Form.Group>
 					<Form.Row>
-						<Col>
-							<Form.Group controlId="username">
-								<Form.Label>Username</Form.Label>
-								<Form.Control
-									name="username"
-									type="text"
-									placeholder="Enter username"
-									value={values.username}
-									onChange={handleChange}
-									isValid={touched.username && !errors.username}
-									isInvalid={touched.username && errors.username}
-									onBlur={handleBlur}
-								/>
-								{errors.username && (
-									<Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
-								)}
-							</Form.Group>
-						</Col>
-						<Col>
-							<Form.Group controlId="password">
-								<Form.Label>Password</Form.Label>
-								<Form.Control
-									name="password"
-									type="password"
-									placeholder="Enter password"
-									value={values.password}
-									onChange={handleChange}
-									isValid={touched.password && !errors.password}
-									isInvalid={touched.password && errors.password}
-									onBlur={handleBlur}
-								/>
-								{errors.password && (
-									<Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
-								)}
-							</Form.Group>
-						</Col>
+						<Form.Group controlId="username">
+							<Form.Label>Username</Form.Label>
+							<Form.Control
+								name="username"
+								type="text"
+								placeholder="Enter username"
+								value={values.username}
+								onChange={handleChange}
+								isValid={touched.username && !errors.username}
+								isInvalid={touched.username && errors.username}
+								onBlur={handleBlur}
+							/>
+							{errors.username && (
+								<Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
+							)}
+						</Form.Group>
+					</Form.Row>
+					<Form.Row>
+						<Form.Group controlId="password">
+							<Form.Label>Password</Form.Label>
+							<Form.Control
+								name="password"
+								type="password"
+								placeholder="Enter password"
+								value={values.password}
+								onChange={handleChange}
+								isValid={touched.password && !errors.password}
+								isInvalid={touched.password && errors.password}
+								onBlur={handleBlur}
+							/>
+							{errors.password && (
+								<Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+							)}
+						</Form.Group>
 					</Form.Row>
 				</Form.Group>
 

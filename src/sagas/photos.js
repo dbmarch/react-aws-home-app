@@ -33,20 +33,50 @@ const getS3 = idToken => {
 	return s3
 }
 
-const fetchPhotoListAsync = idToken => {
+const fetchPhotoImageAsync = async (s3, fileName) => {
+	console.info('fetching photo image', fileName)
+	return new Promise((resolve, reject) => {
+		s3.getObject({ Key: fileName }, function(err, data) {
+			if (err) {
+				console.error(err)
+				reject(err)
+			} else {
+				console.info('image', data)
+				resolve(data)
+				// var albums = data.CommonPrefixes.map(function (commonPrefix) {
+				//   var prefix = commonPrefix.Prefix;
+				//   var albumName = decodeURIComponent(prefix.replace('/', ''));
+			}
+		})
+	})
+}
+const encode = data => {
+	var str = data.reduce(function(a, b) {
+		return a + String.fromCharCode(b)
+	}, '')
+	return btoa(str).replace(/.{76}(?=.)/g, '$&\n')
+}
+
+const downloadPhotos = async (s3, fileList) => {
+	const imageObjectList = await Promise.all(fileList.map(file => fetchPhotoImageAsync(s3, file.Key)))
+
+	const imageSrcList = imageObjectList.map(image => 'data:image/jpeg;base64,' + encode(image.Body))
+	return imageSrcList
+}
+
+const fetchPhotoListAsync = async idToken => {
 	const s3 = getS3(idToken)
 	console.info('s3', s3)
 	return new Promise((resolve, reject) => {
-		s3.listObjectsV2({ MaxKeys: 10 }, function(err, data) {
+		s3.listObjectsV2({ MaxKeys: 10 }, async function(err, data) {
 			if (err) {
 				console.error(err)
 				reject(err)
 			} else {
 				console.info(data)
-				resolve(data)
-				// var albums = data.CommonPrefixes.map(function (commonPrefix) {
-				//   var prefix = commonPrefix.Prefix;
-				//   var albumName = decodeURIComponent(prefix.replace('/', ''));
+
+				const imageSrcList = downloadPhotos(s3, data.Contents)
+				resolve(imageSrcList)
 			}
 		})
 	})
@@ -58,11 +88,12 @@ function* doFetchPhotoList() {
 		const idToken = yield select(idTokenSelector)
 		const photoList = yield call(fetchPhotoListAsync, idToken)
 		console.info('photoList returned', photoList)
-		const photoUrlList = photoList.Contents.map(
-			photo => `https://s3/amazonaws.com/${AwsAppSettings.PHOTO_BUCKET_NAME}/${photo.Key}`
-		)
-		console.log(photoUrlList)
-		yield put(setPhotoUrlList(photoUrlList))
+
+		// const photoUrlList = photoList.Contents.map(
+		// 	photo => `https://s3/amazonaws.com/${AwsAppSettings.PHOTO_BUCKET_NAME}/${photo.Key}`
+		// )
+		// console.log(photoList)
+		yield put(setPhotoUrlList(photoList))
 	} catch (err) {
 		console.error(err)
 	}

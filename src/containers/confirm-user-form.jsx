@@ -5,6 +5,7 @@ import * as yup from 'yup'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Alert from 'react-bootstrap/Alert'
+import Col from 'react-bootstrap/Col'
 import { isAuthLoading, getAuthError, getUser } from '../selectors'
 import { getSignedInUser, confirmUser, resendConfirmationCode } from '../actions'
 
@@ -70,20 +71,21 @@ const ConfirmUserForm = ({ user, confirmUser, authError, resendConfirmationCode 
 					</Form.Group>
 				</Form.Row>
 				<Form.Row>
-					<Form.Group>
-						<Button variant="primary" type="submit">
-							Submit Registration Code
-						</Button>
-					</Form.Group>
-				</Form.Row>
-				<br />
+					<Col xs={2}>
+						<Form.Group>
+							<Button variant="outline-primary" type="button" onClick={() => resendConfirmationCode()}>
+								Resend Code
+							</Button>
+						</Form.Group>
+					</Col>
 
-				<Form.Row>
-					<Form.Group>
-						<Button variant="warning" type="button" onClick={() => resendConfirmationCode()}>
-							Request New Registration Code
-						</Button>
-					</Form.Group>
+					<Col>
+						<Form.Group>
+							<Button variant="primary" type="submit">
+								Verification Code
+							</Button>
+						</Form.Group>
+					</Col>
 				</Form.Row>
 			</Form>
 		</div>
