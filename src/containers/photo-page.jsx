@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { getPhotoList, getPhotoUrlList } from '../selectors'
+import { getPhotoList, getPhotoSrcList } from '../selectors'
 import { fetchPhotoList } from '../actions'
 import Gallery from 'react-photo-gallery'
 import Button from 'react-bootstrap/Button'
 
-const PhotoPage = ({ fetchPhotoList, photoUrlList }) => {
-	const photos = photoUrlList.map(photo => ({ src: photo, width: 4, height: 3 }))
+const PhotoPage = ({ fetchPhotoList, photoList, photoSrcList }) => {
+	const photos = photoSrcList.map(photo => ({ src: photo, width: 4, height: 3 }))
 	return (
 		<div className="photo-page">
 			<h2>React Photo Gallery</h2>
@@ -19,7 +19,7 @@ const PhotoPage = ({ fetchPhotoList, photoUrlList }) => {
 const mapStateToProps = state => {
 	return {
 		photoList: getPhotoList(state),
-		photoUrlList: getPhotoUrlList(state),
+		photoSrcList: getPhotoSrcList(state),
 	}
 }
 

@@ -1,9 +1,10 @@
 import * as AWS from 'aws-sdk'
 import * as AwsAppSettings from '../aws/config'
 import { takeLatest, call, select, put } from 'redux-saga/effects'
-import { FETCH_PHOTO_LIST } from '../actions/action-types'
+import { FETCH_PHOTO_LIST, DOWNLOAD_PHOTOS } from '../actions/action-types'
 import { idTokenSelector } from '../selectors/authSelectors'
-import { setPhotoUrlList } from '../actions'
+import { getPhotoList } from '../selectors'
+import { addPhotoSrcList, setPhotoList } from '../actions'
 
 import Promise from 'bluebird'
 //PHOTO_BUCKET_NAME
@@ -64,9 +65,17 @@ const downloadPhotos = async (s3, fileList) => {
 	return imageSrcList
 }
 
-const fetchPhotoListAsync = async idToken => {
-	const s3 = getS3(idToken)
-	console.info('s3', s3)
+export const downloadPhoto = async (s3, fileName) => {
+	try {
+		const image = await fetchPhotoImageAsync(s3, fileName)
+		const src = 'data:image/jpeg;base64,' + encode(image.Body)
+		return src
+	} catch (err) {
+		return null
+	}
+}
+
+const fetchPhotoListAsync = async s3 => {
 	return new Promise((resolve, reject) => {
 		s3.listObjectsV2({ MaxKeys: 10 }, async function(err, data) {
 			if (err) {
@@ -74,9 +83,9 @@ const fetchPhotoListAsync = async idToken => {
 				reject(err)
 			} else {
 				console.info(data)
-
-				const imageSrcList = downloadPhotos(s3, data.Contents)
-				resolve(imageSrcList)
+				// this object has IsTrucated and NextContinuationToken
+				// const imageSrcList = downloadPhotos(s3, data.Contents)
+				resolve(data.Contents)
 			}
 		})
 	})
@@ -86,14 +95,31 @@ function* doFetchPhotoList() {
 	console.info('doFetchPhotoList')
 	try {
 		const idToken = yield select(idTokenSelector)
-		const photoList = yield call(fetchPhotoListAsync, idToken)
+		const s3 = getS3(idToken)
+		const photoList = yield call(fetchPhotoListAsync, s3)
 		console.info('photoList returned', photoList)
+		yield put(setPhotoList(photoList))
+		yield call(doDownloadPhotos)
+	} catch (err) {
+		console.error(err)
+	}
+}
 
-		// const photoUrlList = photoList.Contents.map(
-		// 	photo => `https://s3/amazonaws.com/${AwsAppSettings.PHOTO_BUCKET_NAME}/${photo.Key}`
-		// )
-		// console.log(photoList)
-		yield put(setPhotoUrlList(photoList))
+function* doDownloadPhotos() {
+	console.info('doDownloadPhotos')
+	try {
+		const idToken = yield select(idTokenSelector)
+		const s3 = getS3(idToken)
+		const photoList = yield select(getPhotoList)
+
+		console.info('photoList to download: ', photoList)
+		for (let i in photoList) {
+			console.info('downloading ', photoList[i])
+			const photoSrc = yield call(downloadPhoto, s3, photoList[i].Key)
+			yield put(addPhotoSrcList(photoSrc))
+		}
+
+		console.info('photo Src List created')
 	} catch (err) {
 		console.error(err)
 	}
@@ -102,4 +128,9 @@ function* doFetchPhotoList() {
 export function* fetchPhotoListSaga() {
 	console.info('Saga-fetchPhotoList')
 	yield takeLatest(FETCH_PHOTO_LIST, doFetchPhotoList)
+}
+
+export function* downloadPhotosSaga() {
+	console.info('Saga-downloadPhotos')
+	yield takeLatest(DOWNLOAD_PHOTOS, doDownloadPhotos)
 }

@@ -7,5 +7,8 @@ export const getAuthenticatedUser = state => state.auth.authenticatedUser
 export const getSession = state => state.auth.session
 export const getNewPassword = state => state.auth.newPassword
 
+// it would be good to have thumbnails returned with this list.
 export const getPhotoList = state => state.photo.photoList
-export const getPhotoUrlList = state => state.photo.photoUrlList
+
+// List of the downloaded photos
+export const getPhotoSrcList = state => state.photo.photoSrcList
