@@ -18,5 +18,5 @@ phases:
             - echo build phase finished
     post_build:
         commands:
-            - aws s3 sync build/ s3://s3-react-aws-home-app --delete --acl public-read --source-region us-east-2 --region us-east-2
+            - aws s3 sync build/ s3://s3-react-aws-home-app --delete --source-region us-east-2 --region us-east-2
             - echo Build completed on 'date'
