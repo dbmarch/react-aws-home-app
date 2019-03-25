@@ -5,7 +5,7 @@ import {
 	confirmUserSaga,
 	resendConfirmationCodeSaga,
 	getSignedInUserSaga,
-	logoutSaga,
+	logoutSaga
 } from './authenticate'
 import { fetchPhotoListSaga } from './photos'
 import { changePasswordSaga, forgotPasswordSaga, deleteAccountSaga } from './account'

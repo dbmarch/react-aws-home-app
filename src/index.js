@@ -13,28 +13,28 @@ import rootSaga from './sagas'
 
 import rootReducer from './reducers/'
 
-const logger = (store) => {
-  return (next) => {
-    return (action) => {
-      console.log('[Middleware] Dispatching ', action)
-      const result = next(action)
-      console.log('[Middleware] next state ', store.getState())
-      return result
-    }
-  }
+const logger = store => {
+	return next => {
+		return action => {
+			console.log('[Middleware] Dispatching ', action)
+			const result = next(action)
+			console.log('[Middleware] next state ', store.getState())
+			return result
+		}
+	}
 }
 const sagaMiddleware = createSagaMiddleware()
-const middlewares = [ sagaMiddleware, logger ]
+const middlewares = [sagaMiddleware, logger]
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middlewares)))
 
 sagaMiddleware.run(rootSaga)
 
 const app = (
-  <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>
+	<Provider store={store}>
+		<BrowserRouter>
+			<App />
+		</BrowserRouter>
+	</Provider>
 )
 
 ReactDOM.render(app, document.getElementById('root'))
