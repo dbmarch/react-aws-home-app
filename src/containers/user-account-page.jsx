@@ -15,12 +15,15 @@ const UserAccountPage = ({ isAuthenticated, authenticatedUser, logout, deleteAcc
 		}
 	}, [isAuthenticated])
 
+	const changePassword = () => {
+		console.info('input old and new password and call the cognito change password...')
+	}
 	return (
 		<div>
 			<Form className="form-login my-3 mx-auto">
 				<Form.Group>
-					<Button variant="danger" type="button" onClick={logout}>
-						LOGOUT
+					<Button variant="primary" type="button" onClick={changePassword}>
+						CHANGE PASSWORD
 					</Button>
 				</Form.Group>
 				<Form.Group>
@@ -36,13 +39,13 @@ const UserAccountPage = ({ isAuthenticated, authenticatedUser, logout, deleteAcc
 const mapStateToProps = state => {
 	return {
 		isAuthenticated: isAuthenticated(state),
-		authenticatedUser: getAuthenticatedUser(state),
+		authenticatedUser: getAuthenticatedUser(state)
 	}
 }
 
 const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logout(null)),
-	deleteAccount: () => dispatch(deleteAccount(null)),
+	deleteAccount: () => dispatch(deleteAccount(null))
 })
 
 export default withRouter(

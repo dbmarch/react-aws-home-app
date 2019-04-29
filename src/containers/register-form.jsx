@@ -4,7 +4,7 @@ import { Formik } from 'formik'
 import * as yup from 'yup'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import Col from 'react-bootstrap/Col'
+// import Col from 'react-bootstrap/Col'
 import Alert from 'react-bootstrap/Alert'
 
 import { isAuthLoading, getAuthError } from '../selectors'
@@ -17,7 +17,7 @@ const Register = ({ isAuthLoading, authError, registerUser, loginUser }) => {
 			email,
 			password,
 			firstName,
-			lastName,
+			lastName
 		}
 		console.info('REGISTER: ', userData)
 		registerUser(userData)
@@ -40,7 +40,7 @@ const Register = ({ isAuthLoading, authError, registerUser, loginUser }) => {
 		email: yup
 			.string()
 			.email('Invalid email')
-			.required('Required'),
+			.required('Required')
 	})
 
 	const registerForm = ({ handleSubmit, handleChange, handleBlur, values, touched, isValid, errors }) => (
@@ -145,7 +145,7 @@ const Register = ({ isAuthLoading, authError, registerUser, loginUser }) => {
 					lastName: '',
 					username: '',
 					password: '',
-					email: '',
+					email: ''
 				}}
 			>
 				{registerForm}
@@ -163,13 +163,13 @@ const Register = ({ isAuthLoading, authError, registerUser, loginUser }) => {
 const mapStateToProps = state => {
 	return {
 		isAuthLoading: isAuthLoading(state),
-		authError: getAuthError(state),
+		authError: getAuthError(state)
 	}
 }
 
 const mapDispatchToProps = dispatch => ({
 	registerUser: user => dispatch(registerUser(user)),
-	loginUser: user => dispatch(loginUser(user)),
+	loginUser: user => dispatch(loginUser(user))
 })
 
 export default connect(

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
 import { isAuthLoading, isAuthenticated, getAuthenticatedUser } from '../selectors'
 import LoginForm from './login-form'
@@ -11,6 +12,7 @@ import ConfirmUserForm from './confirm-user-form'
 const LoginPage = ({ isAuthenticated, authenticatedUser }) => {
 	const [loginType, setLoginType] = useState('login')
 
+	// login page should let you log in
 	return (
 		<div>
 			<Form className="form-login my-3 mx-auto">
@@ -24,6 +26,21 @@ const LoginPage = ({ isAuthenticated, authenticatedUser }) => {
 			</Form>
 
 			{loginType === 'login' && <LoginForm />}
+
+			<div>
+				Forgot your password?{' '}
+				<Button variant="outline" size="sm">
+					Reset Password
+				</Button>
+			</div>
+			<div>
+				{' '}
+				No Account?{' '}
+				<Button variant="outline" size="sm">
+					{' '}
+					Create Account{' '}
+				</Button>
+			</div>
 			{loginType === 'register' && <RegisterForm />}
 			{loginType === 'confirm' && <ConfirmUserForm />}
 		</div>
@@ -34,12 +51,12 @@ const mapStateToProps = state => {
 	return {
 		isAuthenticated: isAuthenticated(state),
 		isAuthLoading: isAuthLoading(state),
-		authenticatedUser: getAuthenticatedUser(state),
+		authenticatedUser: getAuthenticatedUser(state)
 	}
 }
 
 const mapDispatchToProps = dispatch => ({
-	getSignedInUser: () => dispatch(getSignedInUser(null)),
+	getSignedInUser: () => dispatch(getSignedInUser(null))
 })
 
 export default connect(
