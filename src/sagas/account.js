@@ -5,7 +5,7 @@ import { CHANGE_PASSWORD, DELETE_ACCOUNT, FORGOT_PASSWORD } from '../actions/act
 
 import { CognitoUserPool, CognitoUser, CognitoUserAttribute } from 'amazon-cognito-identity-js'
 import { getUser, getNewPassword } from '../selectors'
-import { accessTokenSelector } from '../selectors/authSelectors'
+// import { accessTokenSelector } from '../selectors/authSelectors'
 import { setAuthError } from '../actions'
 import Promise from 'bluebird'
 
@@ -16,7 +16,7 @@ const userPool = new CognitoUserPool(AwsAppSettings.poolData)
 const updateUserAttributesAsync = (user, attribute) => {
 	const userData = {
 		Username: user.username,
-		Pool: userPool,
+		Pool: userPool
 	}
 	const cognitoUser = new CognitoUser(userData)
 	var attributeList = []
@@ -41,7 +41,7 @@ const updateUserAttributesAsync = (user, attribute) => {
 const deleteUserAttributesAsync = (user, attribute) => {
 	const userData = {
 		Username: user.username,
-		Pool: userPool,
+		Pool: userPool
 	}
 	const cognitoUser = new CognitoUser(userData)
 	var attributeList = []
@@ -61,7 +61,7 @@ const deleteUserAttributesAsync = (user, attribute) => {
 const deleteAccountAsync = user => {
 	const userData = {
 		Username: user.username,
-		Pool: userPool,
+		Pool: userPool
 	}
 
 	const cognitoUser = new CognitoUser(userData)
@@ -81,7 +81,7 @@ const deleteAccountAsync = user => {
 const forgotPasswordAsync = user => {
 	const userData = {
 		Username: user.username,
-		Pool: userPool,
+		Pool: userPool
 	}
 	const cognitoUser = new CognitoUser(userData)
 
@@ -97,7 +97,7 @@ const forgotPasswordAsync = user => {
 				var verificationCode = prompt('Please input verification code ', '')
 				var newPassword = prompt('Enter new password ', '')
 				cognitoUser.confirmPassword(verificationCode, newPassword, this)
-			},
+			}
 		})
 	})
 }
@@ -105,7 +105,7 @@ const forgotPasswordAsync = user => {
 const changePasswordAsync = user => {
 	const userData = {
 		Username: user.username,
-		Pool: userPool,
+		Pool: userPool
 	}
 	const cognitoUser = new CognitoUser(userData)
 

@@ -1,5 +1,4 @@
 import {
-	SET_AUTH_LOADING,
 	SET_AUTH_ERROR,
 	SET_AUTHORIZED,
 	SET_SESSION,
@@ -9,18 +8,9 @@ import {
 	LOGIN_USER,
 	SET_AUTHENTICATED_USER,
 	LOGOUT,
-	SET_NEW_PASSWORD,
+	SET_NEW_PASSWORD
 } from '../actions/action-types'
 import { combineReducers } from 'redux'
-
-const isLoading = (state = false, action = {}) => {
-	switch (action.type) {
-		case SET_AUTH_LOADING:
-			return action.payload
-		default:
-			return state
-	}
-}
 
 // Saves the access token
 const isAuthenticated = (state = false, action = {}) => {
@@ -109,12 +99,11 @@ const newPassword = (state = '', action = {}) => {
 }
 
 export default combineReducers({
-	isLoading,
 	authError,
 	isAuthenticated,
 	session,
 	user,
 	userCode,
 	authenticatedUser,
-	newPassword,
+	newPassword
 })

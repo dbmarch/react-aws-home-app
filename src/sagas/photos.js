@@ -22,14 +22,14 @@ const getS3 = idToken => {
 			IdentityPoolId: AwsAppSettings.IDENTITY_POOL_ID,
 			Logins: {
 				// [`cognito-idp.${AWS_REGION}.amazonaws.com/${USER_POOL_ID}`]: idToken,
-				'cognito-idp.us-east-2.amazonaws.com/us-east-2_zyce4X8Kl': idToken,
-			},
-		}),
+				'cognito-idp.us-east-2.amazonaws.com/us-east-2_zyce4X8Kl': idToken
+			}
+		})
 	})
 
 	const s3 = new AWS.S3({
 		apiVersion: '2006-03-01',
-		params: { Bucket: AwsAppSettings.PHOTO_BUCKET_NAME },
+		params: { Bucket: AwsAppSettings.PHOTO_BUCKET_NAME }
 	})
 	return s3
 }
@@ -58,12 +58,12 @@ const encode = data => {
 	return btoa(str).replace(/.{76}(?=.)/g, '$&\n')
 }
 
-const downloadPhotos = async (s3, fileList) => {
-	const imageObjectList = await Promise.all(fileList.map(file => fetchPhotoImageAsync(s3, file.Key)))
+// const downloadPhotos = async (s3, fileList) => {
+// 	const imageObjectList = await Promise.all(fileList.map(file => fetchPhotoImageAsync(s3, file.Key)))
 
-	const imageSrcList = imageObjectList.map(image => 'data:image/jpeg;base64,' + encode(image.Body))
-	return imageSrcList
-}
+// 	const imageSrcList = imageObjectList.map(image => 'data:image/jpeg;base64,' + encode(image.Body))
+// 	return imageSrcList
+// }
 
 export const downloadPhoto = async (s3, fileName) => {
 	try {

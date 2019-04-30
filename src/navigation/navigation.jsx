@@ -8,7 +8,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import { getSignedInUser } from '../actions'
 import { isAuthenticated, getAuthenticatedUser } from '../selectors'
 import get from 'lodash/get'
-import { logout, deleteAccount } from '../actions'
+import { logout } from '../actions'
 
 // import NavDropdown from 'react-bootstrap/NavDropdown'
 
@@ -25,10 +25,6 @@ const Navigation = ({ isAuthenticated, authenticatedUser, logout }) => {
 				Photos
 			</Nav.Link>
 
-			{/* <Nav.Link as={NavLink} to="/gallery" eventKey="3">
-				Gallery
-			</Nav.Link> */}
-
 			{!isAuthenticated && (
 				<Nav.Link as={NavLink} to="/login" eventKey="4" className="ml-auto mr-4">
 					Sign-In
@@ -36,30 +32,28 @@ const Navigation = ({ isAuthenticated, authenticatedUser, logout }) => {
 			)}
 
 			{isAuthenticated && (
-				<NavDropdown
-					id="nav-account"
-					title={get(authenticatedUser, 'username', '---')}
-					className="ml-auto mr-4"
-				>
-					<NavDropdown.Item eventKey="4.1">
-						<Nav.Link as={NavLink} to="/account" eventKey="4" className="ml-auto mr-4">
-							Manage Account
-						</Nav.Link>
-					</NavDropdown.Item>
-					<NavDropdown.Divider />
-					<NavDropdown.Item eventKey="4.2" onClick={logout}>
-						Logout
-					</NavDropdown.Item>
-				</NavDropdown>
+				<React.Fragment>
+					<NavDropdown
+						id="nav-account"
+						title={get(authenticatedUser, 'username', '---')}
+						className="ml-auto mr-4"
+						alignRight
+					>
+						<NavDropdown.Item as={'div'} eventKey="4.1">
+							<Nav.Link as={NavLink} to="/account">
+								Manage Account
+							</Nav.Link>
+						</NavDropdown.Item>
+						<NavDropdown.Divider />
+						<NavDropdown.Item as={'div'} eventKey="4.2" onClick={logout}>
+							<Nav.Link as={NavLink} to="/">
+								Logout
+							</Nav.Link>
+						</NavDropdown.Item>
+					</NavDropdown>
+					{/* <div style={{ margin: '0 3rem' }} /> */}
+				</React.Fragment>
 			)}
-
-			{/* <NavDropdown title="Sign In" id="nav-dropdown" className="ml-auto pr-5 mr-4">
-        
-        <NavDropdown.Divider />
-        <NavDropdown.Item eventKey="4.4" className=" mr-2">
-          Logout
-        </NavDropdown.Item>
-      </NavDropdown> */}
 		</Navbar>
 	)
 }

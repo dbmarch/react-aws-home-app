@@ -59,3 +59,7 @@ a.nav-item-link:hover {
 .form-login {
 	width: 80%;
 }
+
+.form-text {
+	color: blue;
+}
