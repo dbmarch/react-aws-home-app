@@ -1,24 +1,22 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import Alert from 'react-bootstrap/Alert'
 import Col from 'react-bootstrap/Col'
-import { isAuthLoading, getAuthError, getUser } from '../selectors'
-import { getSignedInUser, confirmUser, resendConfirmationCode } from '../actions'
+import get from 'lodash/get'
 
-const ConfirmUserForm = ({ show, handleClose, user, confirmUser, resendConfirmationCode, authError }) => {
-	const username = user.username ? user.username : ''
+const ConfirmUserForm = ({ show, handleClose, user, confirmUser, resendConfirmationCode }) => {
+	const username = get(user, 'username', '')
 	const submitConfirmation = ({ username, usercode }) => {
 		const userData = {
 			username,
 			usercode
 		}
-		console.info('Confirm User: ', userData)
+		console.info('Confirm User: ', username, userData)
 		confirmUser(userData)
+		handleClose()
 	}
 	const schema = yup.object({
 		username: yup
@@ -76,7 +74,11 @@ const ConfirmUserForm = ({ show, handleClose, user, confirmUser, resendConfirmat
 					</Col>
 				</Form.Row>
 				<Modal.Footer>
-					<Button variant="primary" type="button" onClick={() => resendConfirmationCode()}>
+					<Button
+						variant="primary"
+						type="button"
+						onClick={username => resendConfirmationCode({ username: values.username })}
+					>
 						Resend Code
 					</Button>
 					<Button variant="success" type="submit">
@@ -88,7 +90,7 @@ const ConfirmUserForm = ({ show, handleClose, user, confirmUser, resendConfirmat
 	)
 
 	return (
-		<Modal show={show} onHide={handleClose}>
+		<Modal show={show} onHide={handleClose} backdrop="static">
 			<Modal.Header closeButton>
 				<Modal.Title>Confirm New Account</Modal.Title>
 			</Modal.Header>
@@ -103,31 +105,8 @@ const ConfirmUserForm = ({ show, handleClose, user, confirmUser, resendConfirmat
 			>
 				{confirmUserForm}
 			</Formik>
-			{authError && (
-				<Alert variant="danger">
-					<div>ERROR: {authError.error} </div>
-					<div>DESCRIPTION: {authError.description}</div>
-				</Alert>
-			)}
 		</Modal>
 	)
 }
 
-const mapStateToProps = state => {
-	return {
-		isAuthLoading: isAuthLoading(state),
-		authError: getAuthError(state),
-		user: getUser(state)
-	}
-}
-
-const mapDispatchToProps = dispatch => ({
-	getSignedInUser: () => dispatch(getSignedInUser(null)),
-	confirmUser: () => confirmUser(),
-	resendConfirmationCode: () => dispatch(resendConfirmationCode(null))
-})
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(ConfirmUserForm)
+export default ConfirmUserForm

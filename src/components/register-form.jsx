@@ -7,17 +7,17 @@ import Button from 'react-bootstrap/Button'
 import Alert from 'react-bootstrap/Alert'
 import Col from 'react-bootstrap/Col'
 
-const Register = ({ registerUser, authError, show, handleClose }) => {
-	const submitForm = ({ username, password, email, firstName, lastName }) => {
+const Register = ({ registerUser, show, handleClose }) => {
+	const submitForm = ({ username, password, email, phoneNumber }) => {
 		const userData = {
 			username,
 			email,
 			password,
-			firstName,
-			lastName
+			phoneNumber
 		}
 		console.info('REGISTER: ', userData)
 		registerUser(userData)
+		handleClose()
 	}
 	const schema = yup.object({
 		username: yup
@@ -139,7 +139,7 @@ const Register = ({ registerUser, authError, show, handleClose }) => {
 	)
 
 	return (
-		<Modal show={show} onHide={handleClose}>
+		<Modal show={show} onHide={handleClose} backdrop="static">
 			<Modal.Header closeButton>
 				<Modal.Title>Register New Account</Modal.Title>
 			</Modal.Header>
@@ -157,12 +157,6 @@ const Register = ({ registerUser, authError, show, handleClose }) => {
 			>
 				{registerForm}
 			</Formik>
-			{authError && (
-				<Alert variant="danger">
-					<div>ERROR: {authError.error} </div>
-					<div>DESCRIPTION: {authError.description}</div>
-				</Alert>
-			)}
 		</Modal>
 	)
 }

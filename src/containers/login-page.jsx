@@ -6,9 +6,17 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
+import Alert from 'react-bootstrap/Alert'
 
-import { isAuthenticated, getAuthenticatedUser } from '../selectors'
-import { getSignedInUser, registerUser, loginUser } from '../actions'
+import { isAuthenticated, getAuthenticatedUser, getAuthError, getUser } from '../selectors'
+import {
+	getSignedInUser,
+	registerUser,
+	loginUser,
+	resendConfirmationCode,
+	confirmUser,
+	forgotPassword
+} from '../actions'
 
 import LoginForm from '../components/login-form'
 import RegisterForm from '../components/register-form'
@@ -16,7 +24,18 @@ import ConfirmUserForm from '../components/confirm-user-form'
 import PasswordReset from '../components/password-reset'
 import Spacer from '../components/spacer'
 
-const LoginPage = ({ isAuthenticated, authenticatedUser, authError, loginUser, registerUser, history }) => {
+const LoginPage = ({
+	user,
+	isAuthenticated,
+	authenticatedUser,
+	authError,
+	loginUser,
+	registerUser,
+	resendConfirmationCode,
+	confirmUser,
+	resetPassword,
+	history
+}) => {
 	const [passwordReset, showPasswordReset] = useState(false)
 	const [registerUserModal, showRegisterUserModal] = useState(false)
 	const [confirmUserModal, showConfirmUserModal] = useState(false)
@@ -27,12 +46,9 @@ const LoginPage = ({ isAuthenticated, authenticatedUser, authError, loginUser, r
 		}
 	}, [isAuthenticated])
 
-	const resetPassword = email => {
-		console.info(`LOGIN PAGE: reset Password for email ${email}`)
-		showPasswordReset(false)
-	}
+	console.info('authenticatedUser', authenticatedUser)
+	console.info('authError', authError)
 
-	// login page should let you log in
 	return (
 		<Container>
 			<h3 className="mx-auto my-3 form-login">Login</h3>
@@ -41,10 +57,20 @@ const LoginPage = ({ isAuthenticated, authenticatedUser, authError, loginUser, r
 			<PasswordReset
 				show={passwordReset}
 				handleClose={() => showPasswordReset(false)}
-				resetPassword={resetPassword}
+				resetPassword={userData => resetPassword(userData)}
 			/>
-			<RegisterForm show={registerUserModal} handleClose={() => showRegisterUserModal(false)} />
-			<ConfirmUserForm show={confirmUserModal} handleClose={() => showConfirmUserModal(false)} />
+			<RegisterForm
+				show={registerUserModal}
+				handleClose={() => showRegisterUserModal(false)}
+				registerUser={registerUser}
+			/>
+
+			<ConfirmUserForm
+				show={confirmUserModal}
+				handleClose={() => showConfirmUserModal(false)}
+				resendConfirmationCode={resendConfirmationCode}
+				confirmUser={confirmUser}
+			/>
 			<Spacer lines={2} />
 			<Container>
 				<Row>
@@ -81,6 +107,12 @@ const LoginPage = ({ isAuthenticated, authenticatedUser, authError, loginUser, r
 					</Col>
 				</Row>
 			</Container>
+			{authError && (
+				<Alert variant="danger">
+					<div>ERROR: {authError.error} </div>
+					<div>DESCRIPTION: {authError.description}</div>
+				</Alert>
+			)}
 		</Container>
 	)
 }
@@ -88,14 +120,19 @@ const LoginPage = ({ isAuthenticated, authenticatedUser, authError, loginUser, r
 const mapStateToProps = state => {
 	return {
 		isAuthenticated: isAuthenticated(state),
-		authenticatedUser: getAuthenticatedUser(state)
+		authenticatedUser: getAuthenticatedUser(state),
+		authError: getAuthError(state),
+		user: getUser(state)
 	}
 }
 
 const mapDispatchToProps = dispatch => ({
 	getSignedInUser: () => dispatch(getSignedInUser(null)),
 	loginUser: user => dispatch(loginUser(user)),
-	registerUser: user => dispatch(registerUser(user))
+	registerUser: userData => dispatch(registerUser(userData)),
+	resendConfirmationCode: username => dispatch(resendConfirmationCode(username)),
+	confirmUser: confirmationData => dispatch(confirmUser(confirmationData)),
+	resetPassword: userData => dispatch(forgotPassword(userData))
 })
 
 export default withRouter(

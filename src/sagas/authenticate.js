@@ -7,7 +7,7 @@ import {
 	CONFIRM_USER,
 	RESEND_CONFIRMATION_CODE,
 	GET_SIGNED_IN_USER,
-	LOGOUT,
+	LOGOUT
 } from '../actions/action-types'
 
 import { CognitoUserPool, CognitoUserAttribute, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js'
@@ -15,6 +15,7 @@ import { getUser, getUserCode } from '../selectors'
 import { setAuthorized, setAuthError, setAuthenticatedUser, setSession } from '../actions'
 import { idTokenSelector } from '../selectors/authSelectors'
 import Promise from 'bluebird'
+import get from 'lodash/get'
 
 const userPool = new CognitoUserPool(AwsAppSettings.poolData)
 
@@ -27,14 +28,14 @@ const userPool = new CognitoUserPool(AwsAppSettings.poolData)
 //   password: password
 // }
 
-const resendConfirmationCodeAsync = user => {
+const resendConfirmationCodeAsync = userName => {
 	const userData = {
-		Username: user.username,
-		Pool: userPool,
+		Username: userName,
+		Pool: userPool
 	}
 	const cognitoUser = new CognitoUser(userData)
 	return new Promise((resolve, reject) =>
-		cognitoUser.resendconfirmationCode((err, result) => {
+		cognitoUser.resendConfirmationCode((err, result) => {
 			if (err) {
 				reject(err)
 				return
@@ -44,10 +45,10 @@ const resendConfirmationCodeAsync = user => {
 	)
 }
 
-const confirmUserAsync = (user, code) => {
+const confirmUserAsync = (username, code) => {
 	const userData = {
-		Username: user.username,
-		Pool: userPool,
+		Username: username,
+		Pool: userPool
 	}
 	const cognitoUser = new CognitoUser(userData)
 	return new Promise((resolve, reject) =>
@@ -62,31 +63,31 @@ const confirmUserAsync = (user, code) => {
 	)
 }
 
-function* doConfirmUser() {
-	console.info('doConfirmUser')
-	const user = yield select(getUser)
-	const userCode = yield select(getUserCode)
-	if (!user.username || !userCode) {
+function* doConfirmUser(action) {
+	console.info('doConfirmUser', action)
+	const userName = get(action.payload, 'username', null)
+	const userCode = get(action.payload, 'usercode', null)
+	if (!userName || !userCode) {
 		yield put(setAuthError('require username & Confirmation code'))
 		return
 	}
 
 	try {
-		const result = yield call(confirmUserAsync, user, userCode)
+		const result = yield call(confirmUserAsync, userName, userCode)
 		console.info('confirmation returns ', result)
 	} catch (err) {
-		yield put(setAuthError({ error: err.code, description: err.text }))
+		yield put(setAuthError({ error: err.code, description: err.message }))
 	}
 }
 
 const loginAsync = user => {
 	const userData = {
 		Username: user.username,
-		Pool: userPool,
+		Pool: userPool
 	}
 	const authenticationData = {
 		Username: user.username,
-		Password: user.password,
+		Password: user.password
 	}
 
 	const authenticationDetails = new AuthenticationDetails(authenticationData)
@@ -107,7 +108,7 @@ const loginAsync = user => {
 				console.info('mfa required ....')
 				var verificationCode = prompt('Please input verification code', '')
 				cognitoUser.sendMFACode(verificationCode, this)
-			},
+			}
 		})
 	)
 }
@@ -120,8 +121,8 @@ const obtainCredentialsAsync = idToken => {
 			IdentityPoolId: AwsAppSettings.IDENTITY_POOL_ID, // your identity pool id here
 			Logins: {
 				// [`cognito-idp.${AWS_REGION}.amazonaws.com/${USER_POOL_ID}`]: idToken,
-				'cognito-idp.us-east-2.amazonaws.com/us-east-2_zyce4X8Kl': idToken,
-			},
+				'cognito-idp.us-east-2.amazonaws.com/us-east-2_zyce4X8Kl': idToken
+			}
 		})
 		//refreshes credentials using AWS.CognitoIdentity.getCredentialsForIdentity()
 		AWS.config.credentials.refresh(error => {
@@ -176,7 +177,7 @@ export function* doLoginUser() {
 		yield put(setAuthorized(session.isValid()))
 		console.info('Session: ', session)
 	} catch (err) {
-		yield put(setAuthError({ error: err.code, description: err.text }))
+		yield put(setAuthError({ error: err.code, description: err.message }))
 	}
 }
 
@@ -186,7 +187,7 @@ const signupAsync = user => {
 
 		const dataEmail = {
 			Name: 'email',
-			Value: user.email,
+			Value: user.email
 		}
 		// var dataPhoneNumber = {
 		//   Name: 'phone_number',
@@ -230,22 +231,21 @@ export function* doRegisterUser() {
 		yield put(setAuthenticatedUser(cognitoUser))
 	} catch (err) {
 		console.error('register failed ', err)
-		console.info(JSON.stringify(err, null, 2))
 		yield put(setAuthError({ error: err.code, description: err.message }))
 	}
 }
 
-export function* doResendConfirmationCode() {
+export function* doResendConfirmationCode(action) {
 	console.info('doResendConfirmationCode')
-	const user = yield select(getUser)
+	const userName = get(action.payload, 'username', '')
 
-	if (!user.username) {
-		console.error('user name is required ', user)
+	if (!userName) {
+		console.error('user name is required ', userName)
 		return
 	}
 
 	try {
-		const result = yield call(resendConfirmationCodeAsync, user)
+		const result = yield call(resendConfirmationCodeAsync, userName)
 		console.info('resendConfirmationCode returned', result)
 	} catch (err) {
 		console.error('register failed ', err)

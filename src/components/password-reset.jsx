@@ -11,10 +11,11 @@ import Col from 'react-bootstrap/Col'
 // The form below needs to be reworked.
 
 const PasswordReset = ({ show, handleClose, resetPassword }) => {
-	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+	const [username, setUsername] = useState('')
 
 	return (
-		<Modal show={show} onHide={handleClose}>
+		<Modal show={show} onHide={handleClose} backdrop="static">
 			<Modal.Header closeButton>
 				<Modal.Title>Reset your Password</Modal.Title>
 			</Modal.Header>
@@ -23,14 +24,29 @@ const PasswordReset = ({ show, handleClose, resetPassword }) => {
 				<Form>
 					<Form.Row>
 						<Col sm={10}>
-							<Form.Group controlId="email">
-								<Form.Label>Email Address</Form.Label>
+							<Form.Group controlId="username">
+								<Form.Label>Username</Form.Label>
 								<Form.Control
-									name="email"
-									type="email"
-									placeholder="Enter your email address"
-									value={email}
-									onChange={evt => setEmail(evt.target.value)}
+									name="username"
+									type="text"
+									placeholder="Enter your username"
+									value={username}
+									onChange={evt => setUsername(evt.target.value)}
+								/>
+							</Form.Group>
+						</Col>
+					</Form.Row>
+
+					<Form.Row>
+						<Col sm={10}>
+							<Form.Group controlId="password">
+								<Form.Label>New Password</Form.Label>
+								<Form.Control
+									name="password"
+									type="password"
+									placeholder="Enter a new password"
+									value={password}
+									onChange={evt => setPassword(evt.target.value)}
 								/>
 							</Form.Group>
 						</Col>
@@ -42,7 +58,7 @@ const PasswordReset = ({ show, handleClose, resetPassword }) => {
 				<Button variant="secondary" onClick={handleClose}>
 					Cancel
 				</Button>
-				<Button variant="primary" onClick={() => resetPassword(email)}>
+				<Button variant="primary" onClick={() => resetPassword({ username, password })}>
 					Reset Password
 				</Button>
 			</Modal.Footer>

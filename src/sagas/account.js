@@ -8,10 +8,13 @@ import { getUser, getNewPassword } from '../selectors'
 // import { accessTokenSelector } from '../selectors/authSelectors'
 import { setAuthError } from '../actions'
 import Promise from 'bluebird'
+import get from 'lodash/get'
 
 const userPool = new CognitoUserPool(AwsAppSettings.poolData)
 
 //Documentation: https://github.com/aws-amplify/amplify-js/tree/master/packages/amazon-cognito-identity-js
+
+// And this link: https://docs.aws.amazon.com/cognito/latest/developerguide/using-amazon-cognito-user-identity-pools-javascript-examples.html
 
 const updateUserAttributesAsync = (user, attribute) => {
 	const userData = {
@@ -78,28 +81,35 @@ const deleteAccountAsync = user => {
 	})
 }
 
-const forgotPasswordAsync = user => {
+const resetPasswordAsync = (userName, newPassword) => {
 	const userData = {
-		Username: user.username,
+		Username: userName,
 		Pool: userPool
 	}
+
+	console.info(`RESET PASSWORD ${userName} ${newPassword}`)
 	const cognitoUser = new CognitoUser(userData)
 
-	return new Promise((resolve, reject) => {
-		cognitoUser.forgotPassword({
-			onSuccess: function(result) {
-				console.log('call result: ' + result)
-			},
-			onFailure: function(err) {
-				alert(err)
-			},
-			inputVerificationCode() {
-				var verificationCode = prompt('Please input verification code ', '')
-				var newPassword = prompt('Enter new password ', '')
-				cognitoUser.confirmPassword(verificationCode, newPassword, this)
-			}
+	try {
+		return new Promise((resolve, reject) => {
+			cognitoUser.forgotPassword({
+				onSuccess: function(result) {
+					console.log('call result: ' + result)
+					resolve(result)
+				},
+				onFailure: function(err) {
+					console.info('resetPassword returns onFailure', err.code, err.message)
+					reject(err)
+				},
+				inputVerificationCode() {
+					const userCode = prompt('Please input verification code ', '')
+					cognitoUser.confirmPassword(userCode, newPassword, this)
+				}
+			})
 		})
-	})
+	} catch (err) {
+		console.info('exception: ', err)
+	}
 }
 
 const changePasswordAsync = user => {
@@ -121,8 +131,8 @@ const changePasswordAsync = user => {
 	})
 }
 
-export function* doChangePassword() {
-	console.info('doChangePassword')
+export function* doChangePassword(action) {
+	console.info('doChangePassword', action)
 	const user = yield select(getUser)
 	const newPassword = yield select(getNewPassword)
 
@@ -158,6 +168,18 @@ export function* doDeleteAccount() {
 	}
 }
 
+export function* doResetPassword(action) {
+	console.info('doResetPassword', action)
+	const username = get(action.payload, 'username', '')
+	const password = get(action.payload, 'newPassword', '')
+	try {
+		const result = yield call(resetPasswordAsync, username, password)
+		console.info('resetPasswordAsync returned', result)
+	} catch (err) {
+		console.error('resetPasswordAsync failed ', err)
+		yield put(setAuthError({ error: err.code, description: err.message }))
+	}
+}
 export function* changePasswordSaga() {
 	console.info('Saga-changePassword')
 	yield takeLatest(CHANGE_PASSWORD, doChangePassword)
@@ -170,5 +192,5 @@ export function* deleteAccountSaga() {
 
 export function* forgotPasswordSaga() {
 	console.info('Saga-forgotPassword')
-	yield takeLatest(FORGOT_PASSWORD, forgotPasswordAsync)
+	yield takeLatest(FORGOT_PASSWORD, doResetPassword)
 }

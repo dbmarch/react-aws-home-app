@@ -14,7 +14,7 @@ const PasswordChange = ({ show, handleClose, resetPassword }) => {
 
 	console.info('password Reset: show=', show)
 	return (
-		<Modal show={show} onHide={handleClose}>
+		<Modal show={show} onHide={handleClose} backdrop="static">
 			<Modal.Header closeButton>
 				<Modal.Title>Change your Password</Modal.Title>
 			</Modal.Header>

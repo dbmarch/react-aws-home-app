@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button'
 import Alert from 'react-bootstrap/Alert'
 import Container from 'react-bootstrap/Container'
 
-const Login = ({ authError, isAuthenticated, onLogin }) => {
+const Login = ({ isAuthenticated, onLogin }) => {
 	const submitForm = ({ username, password }) => {
 		const userData = {
 			username,
@@ -91,12 +91,6 @@ const Login = ({ authError, isAuthenticated, onLogin }) => {
 			>
 				{loginForm}
 			</Formik>
-			{authError && (
-				<Alert variant="danger">
-					<div>ERROR: {authError.error} </div>
-					<div>DESCRIPTION: {authError.description}</div>
-				</Alert>
-			)}
 		</Container>
 	)
 }
