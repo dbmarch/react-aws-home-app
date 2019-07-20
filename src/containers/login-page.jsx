@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+<<<<<<< Updated upstream
+=======
+import Form from 'react-bootstrap/Form'
+import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
+import { isAuthLoading, isAuthenticated, getAuthenticatedUser } from '../selectors'
+import { getSignedInUser } from '../actions'
+import LoginForm from './account/login-form'
+import RegisterForm from './account/register-form'
+import ConfirmUserForm from './account/confirm-user-form'
+>>>>>>> Stashed changes
 
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'

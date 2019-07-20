@@ -28,7 +28,6 @@ class App extends Component {
 					/>
 					<Route path="/login" component={LoginPage} />
 					<Route path="/account" component={UserAccountPage} />
-
 					<Route component={Home} />
 				</Switch>
 			</div>
