@@ -8,6 +8,7 @@ import UploadPhoto from './../components/UploadPhoto'
 
 const PhotoPage = ({ fetchPhotoList, photoList, photoSrcList }) => {
 	const photos = photoSrcList.map(photo => ({ src: photo, width: 4, height: 3 }))
+
 	return (
 		<div className="photo-page">
 			<h2>React Photo Gallery</h2>
