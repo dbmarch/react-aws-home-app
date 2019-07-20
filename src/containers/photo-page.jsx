@@ -4,7 +4,7 @@ import { getPhotoList, getPhotoSrcList } from '../selectors'
 import { fetchPhotoList } from '../actions'
 import Gallery from 'react-photo-gallery'
 import Button from 'react-bootstrap/Button'
-import UploadPhoto from './UploadPhoto'
+import UploadPhoto from './../components/UploadPhoto'
 
 const PhotoPage = ({ fetchPhotoList, photoList, photoSrcList }) => {
 	const photos = photoSrcList.map(photo => ({ src: photo, width: 4, height: 3 }))
@@ -12,11 +12,11 @@ const PhotoPage = ({ fetchPhotoList, photoList, photoSrcList }) => {
 		<div className="photo-page">
 			<h2>React Photo Gallery</h2>
 			<Button onClick={fetchPhotoList}>FETCH PHOTOS</Button>
-      <Gallery photos={photos} />
-      <br>
-      <hr>
-      </hr>
-      <UploadPhoto />
+			<Gallery photos={photos} />
+			<br />
+			<hr />
+
+			<UploadPhoto />
 		</div>
 	)
 }

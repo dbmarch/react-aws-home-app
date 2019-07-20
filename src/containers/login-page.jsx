@@ -1,16 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-<<<<<<< Updated upstream
-=======
-import Form from 'react-bootstrap/Form'
-import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
-import { isAuthLoading, isAuthenticated, getAuthenticatedUser } from '../selectors'
-import { getSignedInUser } from '../actions'
-import LoginForm from './account/login-form'
-import RegisterForm from './account/register-form'
-import ConfirmUserForm from './account/confirm-user-form'
->>>>>>> Stashed changes
 
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
@@ -25,7 +15,7 @@ import {
 	loginUser,
 	resendConfirmationCode,
 	confirmUser,
-	forgotPassword
+	forgotPassword,
 } from '../actions'
 
 import LoginForm from '../components/login-form'
@@ -44,7 +34,7 @@ const LoginPage = ({
 	resendConfirmationCode,
 	confirmUser,
 	resetPassword,
-	history
+	history,
 }) => {
 	const [passwordReset, showPasswordReset] = useState(false)
 	const [registerUserModal, showRegisterUserModal] = useState(false)
@@ -132,7 +122,7 @@ const mapStateToProps = state => {
 		isAuthenticated: isAuthenticated(state),
 		authenticatedUser: getAuthenticatedUser(state),
 		authError: getAuthError(state),
-		user: getUser(state)
+		user: getUser(state),
 	}
 }
 
@@ -142,7 +132,7 @@ const mapDispatchToProps = dispatch => ({
 	registerUser: userData => dispatch(registerUser(userData)),
 	resendConfirmationCode: username => dispatch(resendConfirmationCode(username)),
 	confirmUser: confirmationData => dispatch(confirmUser(confirmationData)),
-	resetPassword: userData => dispatch(forgotPassword(userData))
+	resetPassword: userData => dispatch(forgotPassword(userData)),
 })
 
 export default withRouter(
