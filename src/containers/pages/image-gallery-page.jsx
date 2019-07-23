@@ -2,8 +2,8 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { getPhotoList, getPhotoSrcList } from '../selectors'
-import { fetchPhotoList } from '../actions'
+import { getPhotoList, getPhotoSrcList } from '../../selectors'
+import { fetchPhotoList } from '../../actions'
 import ImageGallery from 'react-image-gallery'
 
 const PhotoPage = props => {
@@ -34,13 +34,13 @@ const PhotoPage = props => {
 const mapStateToProps = state => {
 	return {
 		photoList: getPhotoList(state),
-		photoSrcList: getPhotoSrcList(state)
+		photoSrcList: getPhotoSrcList(state),
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
-		fetchPhotoList: () => dispatch(fetchPhotoList())
+		fetchPhotoList: () => dispatch(fetchPhotoList()),
 	}
 }
 

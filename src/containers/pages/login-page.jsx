@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
 import Alert from 'react-bootstrap/Alert'
 
-import { isAuthenticated, getAuthenticatedUser, getAuthError, getUser } from '../selectors'
+import { isAuthenticated, getAuthenticatedUser, getAuthError, getUser } from '../../selectors'
 import {
 	getSignedInUser,
 	registerUser,
@@ -16,13 +16,13 @@ import {
 	resendConfirmationCode,
 	confirmUser,
 	forgotPassword,
-} from '../actions'
+} from '../../actions'
 
-import LoginForm from '../components/login-form'
-import RegisterForm from '../components/register-form'
-import ConfirmUserForm from '../components/confirm-user-form'
-import PasswordReset from '../components/password-reset'
-import Spacer from '../components/spacer'
+import LoginForm from '../../components/login-form'
+import RegisterForm from '../../components/register-form'
+import ConfirmUserForm from '../../components/confirm-user-form'
+import PasswordReset from '../../components/password-reset'
+import Spacer from '../../components/spacer'
 
 const LoginPage = ({
 	user,

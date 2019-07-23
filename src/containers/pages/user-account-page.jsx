@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Form from 'react-bootstrap/Form'
-import { isAuthenticated, getAuthenticatedUser } from '../selectors'
-import { logout, deleteAccount } from '../actions'
+import { isAuthenticated, getAuthenticatedUser } from '../../selectors'
+import { logout, deleteAccount } from '../../actions'
 import Button from 'react-bootstrap/Button'
-import PasswordChange from '../components/password-change'
+import PasswordChange from '../../components/password-change'
 
 /// this is the page where we would change password , add attributes, etc.
 const UserAccountPage = ({ isAuthenticated, authenticatedUser, logout, deleteAccount, history }) => {
@@ -47,13 +47,13 @@ const UserAccountPage = ({ isAuthenticated, authenticatedUser, logout, deleteAcc
 const mapStateToProps = state => {
 	return {
 		isAuthenticated: isAuthenticated(state),
-		authenticatedUser: getAuthenticatedUser(state)
+		authenticatedUser: getAuthenticatedUser(state),
 	}
 }
 
 const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logout(null)),
-	deleteAccount: () => dispatch(deleteAccount(null))
+	deleteAccount: () => dispatch(deleteAccount(null)),
 })
 
 export default withRouter(

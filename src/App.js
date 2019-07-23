@@ -5,11 +5,12 @@ import Navigation from './navigation/navigation'
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
 import { isAuthenticated } from './selectors'
 
-import Home from './containers/home-page'
-import LoginPage from './containers/login-page'
-import UserAccountPage from './containers/user-account-page'
-import PhotoPage from './containers/photo-page'
-import GalleryPage from './containers/image-gallery-page'
+import Home from './containers/pages/home-page'
+import LoginPage from './containers/pages/login-page'
+import UserAccountPage from './containers/pages/user-account-page'
+import PhotoPage from './containers/pages/photo-page'
+import GalleryPage from './containers/pages/image-gallery-page'
+import TestPage from './containers/pages/test-page'
 
 class App extends Component {
 	render() {
@@ -28,6 +29,8 @@ class App extends Component {
 					/>
 					<Route path="/login" component={LoginPage} />
 					<Route path="/account" component={UserAccountPage} />
+					<Route path="/test" render={() => <TestPage />} />
+
 					<Route component={Home} />
 				</Switch>
 			</div>

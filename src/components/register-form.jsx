@@ -4,7 +4,7 @@ import * as yup from 'yup'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import Alert from 'react-bootstrap/Alert'
+//import Alert from 'react-bootstrap/Alert'
 import Col from 'react-bootstrap/Col'
 
 const Register = ({ registerUser, show, handleClose }) => {
@@ -13,7 +13,7 @@ const Register = ({ registerUser, show, handleClose }) => {
 			username,
 			email,
 			password,
-			phoneNumber
+			phoneNumber,
 		}
 		console.info('REGISTER: ', userData)
 		registerUser(userData)
@@ -37,7 +37,7 @@ const Register = ({ registerUser, show, handleClose }) => {
 		email: yup
 			.string()
 			.email('Invalid email')
-			.required('Required')
+			.required('Required'),
 	})
 
 	const registerForm = ({ handleSubmit, handleChange, handleBlur, values, touched, isValid, errors }) => (
@@ -152,7 +152,7 @@ const Register = ({ registerUser, show, handleClose }) => {
 					lastName: '',
 					username: '',
 					password: '',
-					email: ''
+					email: '',
 				}}
 			>
 				{registerForm}

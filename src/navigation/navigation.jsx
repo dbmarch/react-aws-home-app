@@ -21,6 +21,10 @@ const Navigation = ({ isAuthenticated, authenticatedUser, logout }) => {
 				Home{' '}
 			</Nav.Link>
 
+			<Nav.Link as={NavLink} to="/test" eventKey="1">
+				Test
+			</Nav.Link>
+
 			<Nav.Link as={NavLink} to="/photos" eventKey="2">
 				Photos
 			</Nav.Link>
@@ -60,13 +64,13 @@ const Navigation = ({ isAuthenticated, authenticatedUser, logout }) => {
 const mapStateToProps = state => {
 	return {
 		isAuthenticated: isAuthenticated(state),
-		authenticatedUser: getAuthenticatedUser(state)
+		authenticatedUser: getAuthenticatedUser(state),
 	}
 }
 
 const mapDispatchToProps = dispatch => ({
 	getSignedInUser: () => dispatch(getSignedInUser(null)),
-	logout: () => dispatch(logout(null))
+	logout: () => dispatch(logout(null)),
 })
 
 export default connect(

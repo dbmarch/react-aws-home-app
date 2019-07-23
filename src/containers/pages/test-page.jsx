@@ -2,8 +2,6 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import ClipboardJS from 'clipboard'
 
-import PhotoCard from '../components/photo-card'
-
 // const copyText = elementId => {
 // 	const el = document.getElementById(elementId)
 // 	el.contentEditable = true
@@ -61,7 +59,6 @@ const HomePage = props => {
 			<br />
 			<br />
 			<br />
-			<PhotoCard title="Photo Title" description="This is some text" />
 		</div>
 	)
 }

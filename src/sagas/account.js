@@ -3,7 +3,7 @@ import * as AwsAppSettings from '../aws/config'
 import { takeLatest, select, put, call } from 'redux-saga/effects'
 import { CHANGE_PASSWORD, DELETE_ACCOUNT, FORGOT_PASSWORD } from '../actions/action-types'
 
-import { CognitoUserPool, CognitoUser, CognitoUserAttribute } from 'amazon-cognito-identity-js'
+import { CognitoUserPool, CognitoUser } from 'amazon-cognito-identity-js'
 import { getUser, getNewPassword } from '../selectors'
 // import { accessTokenSelector } from '../selectors/authSelectors'
 import { setAuthError } from '../actions'
@@ -16,55 +16,55 @@ const userPool = new CognitoUserPool(AwsAppSettings.poolData)
 
 // And this link: https://docs.aws.amazon.com/cognito/latest/developerguide/using-amazon-cognito-user-identity-pools-javascript-examples.html
 
-const updateUserAttributesAsync = (user, attribute) => {
-	const userData = {
-		Username: user.username,
-		Pool: userPool
-	}
-	const cognitoUser = new CognitoUser(userData)
-	var attributeList = []
-	// var attribute = {
-	//   Name: 'nickname',
-	//   Value: 'joe'
-	// };
-	attributeList.push(new CognitoUserAttribute(attribute))
+// const updateUserAttributesAsync = (user, attribute) => {
+// 	const userData = {
+// 		Username: user.username,
+// 		Pool: userPool,
+// 	}
+// 	const cognitoUser = new CognitoUser(userData)
+// 	var attributeList = []
+// 	// var attribute = {
+// 	//   Name: 'nickname',
+// 	//   Value: 'joe'
+// 	// };
+// 	attributeList.push(new CognitoUserAttribute(attribute))
 
-	return new Promise((resolve, reject) => {
-		cognitoUser.updateAttributes(attributeList, function(err, result) {
-			if (err) {
-				alert(err.message || JSON.stringify(err))
-				return reject(err)
-			}
-			console.log('call result: ' + result)
-			return resolve(result)
-		})
-	})
-}
+// 	return new Promise((resolve, reject) => {
+// 		cognitoUser.updateAttributes(attributeList, function(err, result) {
+// 			if (err) {
+// 				alert(err.message || JSON.stringify(err))
+// 				return reject(err)
+// 			}
+// 			console.log('call result: ' + result)
+// 			return resolve(result)
+// 		})
+// 	})
+// }
 
-const deleteUserAttributesAsync = (user, attribute) => {
-	const userData = {
-		Username: user.username,
-		Pool: userPool
-	}
-	const cognitoUser = new CognitoUser(userData)
-	var attributeList = []
-	attributeList.push('nickname')
-	return new Promise((resolve, reject) => {
-		cognitoUser.deleteAttributes(attributeList, function(err, result) {
-			if (err) {
-				alert(err.message || JSON.stringify(err))
-				return reject(err)
-			}
-			console.log('call result: ' + result)
-			return resolve(result)
-		})
-	})
-}
+// const deleteUserAttributesAsync = (user, attribute) => {
+// 	const userData = {
+// 		Username: user.username,
+// 		Pool: userPool
+// 	}
+// 	const cognitoUser = new CognitoUser(userData)
+// 	var attributeList = []
+// 	attributeList.push('nickname')
+// 	return new Promise((resolve, reject) => {
+// 		cognitoUser.deleteAttributes(attributeList, function(err, result) {
+// 			if (err) {
+// 				alert(err.message || JSON.stringify(err))
+// 				return reject(err)
+// 			}
+// 			console.log('call result: ' + result)
+// 			return resolve(result)
+// 		})
+// 	})
+// }
 
 const deleteAccountAsync = user => {
 	const userData = {
 		Username: user.username,
-		Pool: userPool
+		Pool: userPool,
 	}
 
 	const cognitoUser = new CognitoUser(userData)
@@ -84,7 +84,7 @@ const deleteAccountAsync = user => {
 const resetPasswordAsync = (userName, newPassword) => {
 	const userData = {
 		Username: userName,
-		Pool: userPool
+		Pool: userPool,
 	}
 
 	console.info(`RESET PASSWORD ${userName} ${newPassword}`)
@@ -104,7 +104,7 @@ const resetPasswordAsync = (userName, newPassword) => {
 				inputVerificationCode() {
 					const userCode = prompt('Please input verification code ', '')
 					cognitoUser.confirmPassword(userCode, newPassword, this)
-				}
+				},
 			})
 		})
 	} catch (err) {
@@ -115,7 +115,7 @@ const resetPasswordAsync = (userName, newPassword) => {
 const changePasswordAsync = user => {
 	const userData = {
 		Username: user.username,
-		Pool: userPool
+		Pool: userPool,
 	}
 	const cognitoUser = new CognitoUser(userData)
 

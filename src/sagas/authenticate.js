@@ -7,11 +7,11 @@ import {
 	CONFIRM_USER,
 	RESEND_CONFIRMATION_CODE,
 	GET_SIGNED_IN_USER,
-	LOGOUT
+	LOGOUT,
 } from '../actions/action-types'
 
 import { CognitoUserPool, CognitoUserAttribute, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js'
-import { getUser, getUserCode } from '../selectors'
+import { getUser } from '../selectors'
 import { setAuthorized, setAuthError, setAuthenticatedUser, setSession } from '../actions'
 import { idTokenSelector } from '../selectors/authSelectors'
 import Promise from 'bluebird'
@@ -31,7 +31,7 @@ const userPool = new CognitoUserPool(AwsAppSettings.poolData)
 const resendConfirmationCodeAsync = userName => {
 	const userData = {
 		Username: userName,
-		Pool: userPool
+		Pool: userPool,
 	}
 	const cognitoUser = new CognitoUser(userData)
 	return new Promise((resolve, reject) =>
@@ -48,7 +48,7 @@ const resendConfirmationCodeAsync = userName => {
 const confirmUserAsync = (username, code) => {
 	const userData = {
 		Username: username,
-		Pool: userPool
+		Pool: userPool,
 	}
 	const cognitoUser = new CognitoUser(userData)
 	return new Promise((resolve, reject) =>
@@ -83,11 +83,11 @@ function* doConfirmUser(action) {
 const loginAsync = user => {
 	const userData = {
 		Username: user.username,
-		Pool: userPool
+		Pool: userPool,
 	}
 	const authenticationData = {
 		Username: user.username,
-		Password: user.password
+		Password: user.password,
 	}
 
 	const authenticationDetails = new AuthenticationDetails(authenticationData)
@@ -108,7 +108,7 @@ const loginAsync = user => {
 				console.info('mfa required ....')
 				var verificationCode = prompt('Please input verification code', '')
 				cognitoUser.sendMFACode(verificationCode, this)
-			}
+			},
 		})
 	)
 }
@@ -121,8 +121,8 @@ const obtainCredentialsAsync = idToken => {
 			IdentityPoolId: AwsAppSettings.IDENTITY_POOL_ID, // your identity pool id here
 			Logins: {
 				// [`cognito-idp.${AWS_REGION}.amazonaws.com/${USER_POOL_ID}`]: idToken,
-				'cognito-idp.us-east-2.amazonaws.com/us-east-2_zyce4X8Kl': idToken
-			}
+				'cognito-idp.us-east-2.amazonaws.com/us-east-2_zyce4X8Kl': idToken,
+			},
 		})
 		//refreshes credentials using AWS.CognitoIdentity.getCredentialsForIdentity()
 		AWS.config.credentials.refresh(error => {
@@ -187,7 +187,7 @@ const signupAsync = user => {
 
 		const dataEmail = {
 			Name: 'email',
-			Value: user.email
+			Value: user.email,
 		}
 		// var dataPhoneNumber = {
 		//   Name: 'phone_number',

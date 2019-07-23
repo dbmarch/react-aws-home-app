@@ -3,14 +3,13 @@ import { Formik } from 'formik'
 import * as yup from 'yup'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import Alert from 'react-bootstrap/Alert'
 import Container from 'react-bootstrap/Container'
 
 const Login = ({ isAuthenticated, onLogin }) => {
 	const submitForm = ({ username, password }) => {
 		const userData = {
 			username,
-			password
+			password,
 		}
 		console.info('LOGIN: ', userData)
 		onLogin(userData)
@@ -24,7 +23,7 @@ const Login = ({ isAuthenticated, onLogin }) => {
 		password: yup
 			.string()
 			.min(6, 'Too short')
-			.required('Required')
+			.required('Required'),
 	})
 
 	const loginForm = ({ handleSubmit, handleChange, handleBlur, values, touched, isValid, errors }) => (
@@ -86,7 +85,7 @@ const Login = ({ isAuthenticated, onLogin }) => {
 					lastName: '',
 					username: '',
 					password: '',
-					email: ''
+					email: '',
 				}}
 			>
 				{loginForm}
