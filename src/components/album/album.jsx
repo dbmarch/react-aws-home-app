@@ -1,8 +1,6 @@
 import React from 'react'
 
 const Album = ({ create, name }) => {
-	console.info('Console name: ', name)
-
 	const getAlbumName = () => {
 		console.info('get name')
 	}
