@@ -68,3 +68,11 @@ a.nav-item-link:hover {
   width: 20%;
   border: 1px solid #ccc;
 }
+
+.album {
+  width: 4rem;
+  height: 4rem;
+  border: 1px solid red;
+}
+
+.album-gallery {}

@@ -18,11 +18,11 @@ import {
 	forgotPassword,
 } from '../../actions'
 
-import LoginForm from '../../components/login-form'
-import RegisterForm from '../../components/register-form'
-import ConfirmUserForm from '../../components/confirm-user-form'
-import PasswordReset from '../../components/password-reset'
-import Spacer from '../../components/spacer'
+import LoginForm from '../../components/account/login-form'
+import RegisterForm from '../../components/account/register-form'
+import ConfirmUserForm from '../../components/account/confirm-user-form'
+import PasswordReset from '../../components/account/password-reset'
+import Spacer from '../../components/ui/spacer'
 
 const LoginPage = ({
 	user,

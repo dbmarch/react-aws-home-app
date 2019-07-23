@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import AlbumGallery from '../../components/album-gallery'
-import PhotoCard from '../../components/photo-card'
+import { getAlbumList } from '../../selectors'
+import AlbumGallery from '../../components/album/album-gallery'
+import PhotoCard from '../../components/photo/photo-card'
 
-const HomePage = props => {
+const HomePage = ({ albums }) => {
 	return (
 		<div>
 			<h2>Home Page</h2>
@@ -13,13 +14,15 @@ const HomePage = props => {
 			<br />
 			<PhotoCard title="Photo Title" description="This is some text" />
 
-			<AlbumGallery />
+			<AlbumGallery gallery={albums} />
 		</div>
 	)
 }
 
 const mapStateToProps = state => {
-	return {}
+	return {
+		albums: () => getAlbumList(state),
+	}
 }
 
 const mapDispatchToProps = dispatch => ({})

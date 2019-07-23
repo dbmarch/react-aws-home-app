@@ -25,3 +25,8 @@ export const FETCH_PHOTO_LIST = 'FETCH_PHOTO_LIST'
 export const ADD_PHOTO_SRC_LIST = 'ADD_PHOTO_SRC_LIST'
 export const DOWNLOAD_PHOTOS = 'DOWNLOAD_PHOTOS'
 export const SET_PHOTO_LIST = 'SET_PHOTO_LIST'
+
+// Albums
+export const FETCH_ALBUMs = 'FETCH_ALBUMS'
+export const ADD_ALBUM = 'ADD_ALBUM'
+export const REMOVE_ALBUM = 'REMOVE_ALBUM'

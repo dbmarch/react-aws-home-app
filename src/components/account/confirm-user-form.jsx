@@ -12,7 +12,7 @@ const ConfirmUserForm = ({ show, handleClose, user, confirmUser, resendConfirmat
 	const submitConfirmation = ({ username, usercode }) => {
 		const userData = {
 			username,
-			usercode
+			usercode,
 		}
 		console.info('Confirm User: ', username, userData)
 		confirmUser(userData)
@@ -27,7 +27,7 @@ const ConfirmUserForm = ({ show, handleClose, user, confirmUser, resendConfirmat
 		usercode: yup
 			.string()
 			.min(2, 'Too short')
-			.required('Required')
+			.required('Required'),
 	})
 
 	const confirmUserForm = ({ handleSubmit, handleChange, handleBlur, values, touched, isValid, errors }) => (
@@ -100,7 +100,7 @@ const ConfirmUserForm = ({ show, handleClose, user, confirmUser, resendConfirmat
 				onSubmit={submitConfirmation}
 				initialValues={{
 					username,
-					usercode: ''
+					usercode: '',
 				}}
 			>
 				{confirmUserForm}

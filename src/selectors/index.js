@@ -12,3 +12,5 @@ export const getPhotoList = state => state.photo.photoList
 
 // List of the downloaded photos
 export const getPhotoSrcList = state => state.photo.photoSrcList
+
+export const getAlbumList = state => state.album.albums

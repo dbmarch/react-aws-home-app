@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form'
 import { isAuthenticated, getAuthenticatedUser } from '../../selectors'
 import { logout, deleteAccount } from '../../actions'
 import Button from 'react-bootstrap/Button'
-import PasswordChange from '../../components/password-change'
+import PasswordChange from '../../components/account/password-change'
 
 /// this is the page where we would change password , add attributes, etc.
 const UserAccountPage = ({ isAuthenticated, authenticatedUser, logout, deleteAccount, history }) => {
